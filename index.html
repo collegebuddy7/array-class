@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>College Buddy – C Arrays Class Registration</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#1b3a5c;--green:#52a823;--green2:#3d8019;--gold:#f5a623;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Poppins',sans-serif;background:#eef2f7;min-height:100vh;padding-bottom:3rem;}
+
+/* NAV */
+nav{background:linear-gradient(90deg,#1b3a5c,#254e7a);position:sticky;top:0;z-index:100;box-shadow:0 2px 14px rgba(27,58,92,.3);}
+.nav-inner{max-width:620px;margin:0 auto;display:flex;align-items:center;gap:.75rem;padding:.55rem 1rem;}
+.nav-logo{height:40px;object-fit:contain;flex-shrink:0;}
+.nav-title{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:.95rem;line-height:1.2;flex:1;}
+.nav-title span{color:#a8e063;}
+.nav-badge{background:var(--gold);color:#1b3a5c;font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;padding:.22rem .65rem;border-radius:99px;white-space:nowrap;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1b3a5c 0%,#254e7a 55%,#1a5e38 100%);padding:1.75rem 1rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.hero::after{content:'[ ]';position:absolute;font-size:9rem;font-family:'Nunito',sans-serif;font-weight:900;color:rgba(255,255,255,.04);right:-1rem;bottom:-1rem;pointer-events:none;}
+.chip{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.18);border-radius:99px;padding:.25rem .8rem;color:#a8e063;font-size:.72rem;font-weight:600;margin-bottom:.65rem;}
+.hero h1{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:clamp(1.3rem,5vw,1.85rem);line-height:1.25;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero p{color:rgba(255,255,255,.68);font-size:.82rem;margin-top:.3rem;}
+
+/* PROGRESS */
+.pw{background:rgba(255,255,255,.14);border-radius:99px;height:5px;margin:.9rem auto 0;max-width:300px;}
+#pg{height:5px;border-radius:99px;background:linear-gradient(90deg,var(--gold),#ffd95e);width:0%;transition:width .3s ease;}
+#pg-t{color:rgba(255,255,255,.55);font-size:.7rem;margin-top:.28rem;}
+
+/* CARD */
+.card{background:#fff;border-radius:18px;box-shadow:0 4px 30px rgba(27,58,92,.09);animation:up .45s ease both;}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* REFERRAL BANNER */
+.ref-bar{display:none;align-items:center;gap:.5rem;background:linear-gradient(90deg,#f0fae8,#e8f4ff);border:1.5px solid #b6dfa0;border-radius:11px;padding:.65rem .9rem;margin-bottom:1.1rem;font-size:.82rem;color:var(--navy);}
+.ref-bar strong{color:var(--green2);}
+
+/* FIELD */
+.field{margin-bottom:1.05rem;}
+.lbl{display:block;font-weight:600;font-size:.82rem;color:#334155;margin-bottom:.3rem;}
+.req{color:#ef4444;}
+
+/* INPUT / SELECT / TEXTAREA */
+.fi{width:100%;border:2px solid #e2e8f0;border-radius:10px;padding:.62rem .88rem;font-family:'Poppins',sans-serif;font-size:.87rem;color:#1e293b;background:#f8fafc;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;}
+.fi:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(82,168,35,.13);background:#fff;}
+.fi.err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.1);}
+select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%231b3a5c' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2.2rem;cursor:pointer;}
+.et{font-size:.72rem;color:#ef4444;margin-top:.25rem;display:none;}
+
+/* RADIO PILLS */
+.rg{display:flex;flex-wrap:wrap;gap:.4rem;}
+.rp{display:flex;align-items:center;gap:.38rem;padding:.42rem .82rem;border:2px solid #e2e8f0;border-radius:99px;cursor:pointer;font-size:.81rem;background:#f8fafc;transition:all .15s;user-select:none;}
+.rp:hover{border-color:var(--green);background:#f0fae8;}
+.rp input{accent-color:var(--green);width:14px;height:14px;}
+.rp.sel{border-color:var(--green);background:#f0fae8;font-weight:700;color:var(--navy);}
+
+/* SUBMIT */
+.sub-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:12px;padding:.92rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 4px 16px rgba(82,168,35,.38);transition:transform .15s,box-shadow .15s;}
+.sub-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(82,168,35,.48);}
+.sub-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.spin{width:18px;height:18px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* SUCCESS MODAL */
+.ov{position:fixed;inset:0;z-index:999;background:rgba(8,18,36,.6);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .28s;}
+.ov.on{opacity:1;pointer-events:all;}
+.mbox{background:#fff;border-radius:22px;padding:2rem 1.6rem;max-width:380px;width:100%;text-align:center;transform:scale(.83) translateY(18px);transition:transform .3s cubic-bezier(.22,.8,.35,1);box-shadow:0 24px 60px rgba(0,0,0,.22);}
+.ov.on .mbox{transform:scale(1) translateY(0);}
+.wa-ic{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;margin:0 auto .9rem;font-size:1.9rem;animation:wap 2s ease infinite;}
+@keyframes wap{0%,100%{box-shadow:0 5px 20px rgba(37,211,102,.4)}50%{box-shadow:0 5px 32px rgba(37,211,102,.72)}}
+.wa-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;text-decoration:none;border-radius:11px;padding:.75rem 1.4rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.96rem;margin-top:.85rem;transition:transform .15s;}
+.wa-btn:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <div class="nav-inner">
+    <img src="College_Buddy_Logo-02.png" alt="College Buddy" class="nav-logo"
+         onerror="this.outerHTML='<span style=\'font-family:Nunito,sans-serif;font-weight:900;font-size:1rem;color:#fff\'>College<span style=\'color:#a8e063\'>Buddy</span></span>'"/>
+    <div class="nav-title">C Programming · <span>Arrays Class</span></div>
+    <div class="nav-badge">🎓 Free</div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="chip">📚 Topic: Arrays in C</div>
+  <h1>Register for <em>Free Class</em></h1>
+  <p>Form bharo aur Arrays seekhna shuru karo! 🚀</p>
+  <div class="pw"><div id="pg"></div></div>
+  <p id="pg-t"></p>
+</div>
+
+<!-- ── FORM ── -->
+<div style="max-width:620px;margin:1.2rem auto 0;padding:0 1rem;">
+  <div class="card" style="padding:1.5rem 1.25rem;">
+    <div style="padding:0 .1rem;">
+
+      <!-- Referral Banner (auto shown from ?ref=) -->
+      <div class="ref-bar" id="refBar">
+        👋 Referred by: <strong id="refName"></strong>
+      </div>
+
+      <!-- Full Name -->
+      <div class="field">
+        <label class="lbl">Full Name <span class="req">*</span></label>
+        <input type="text" id="f-name" class="fi" placeholder="Apna pura naam likhein"/>
+        <p class="et" id="e-name">Naam required hai.</p>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label class="lbl">Email Address <span class="req">*</span></label>
+        <input type="email" id="f-email" class="fi" placeholder="example@gmail.com" inputmode="email"/>
+        <p class="et" id="e-email">Valid email enter karein.</p>
+      </div>
+
+      <!-- Mobile -->
+      <div class="field">
+        <label class="lbl">Mobile Number <span class="req">*</span></label>
+        <input type="tel" id="f-mobile" class="fi" placeholder="10-digit number" maxlength="10" inputmode="numeric"/>
+        <p class="et" id="e-mobile">Valid 10-digit number enter karein.</p>
+      </div>
+
+      <!-- College Dropdown -->
+      <div class="field">
+        <label class="lbl">College <span class="req">*</span></label>
+        <select id="f-college" class="fi">
+          <option value="">-- Apna College Select Karein --</option>
+          <!-- ✏️ ADD YOUR COLLEGES HERE -->
+        </select>
+        <p class="et" id="e-college">College select karein.</p>
+      </div>
+
+      <!-- Laptop -->
+      <div class="field">
+        <label class="lbl">Aapke paas Laptop/Computer hai? <span class="req">*</span></label>
+        <div class="rg">
+          <label class="rp"><input type="radio" name="laptop" value="Haan, Laptop/Computer Hai"/> 💻 Haan, Hai</label>
+          <label class="rp"><input type="radio" name="laptop" value="Nahi, Bas Phone Hai"/> 📱 Nahi, Bas Phone Hai</label>
+        </div>
+        <p class="et" id="e-laptop">Ek option select karein.</p>
+      </div>
+
+      <!-- Feedback -->
+      <div class="field" style="margin-bottom:1.4rem;">
+        <label class="lbl">Suggestion / Feedback <span class="req">*</span></label>
+        <textarea id="f-feedback" class="fi" rows="3" placeholder="Koi bhi sawaal, suggestion ya expectation likhein..." style="resize:none;"></textarea>
+        <p class="et" id="e-feedback">Feedback required hai.</p>
+      </div>
+
+      <!-- Submit -->
+      <button class="sub-btn" id="subBtn" onclick="submitForm()">
+        <div class="spin" id="spin"></div>
+        <span id="btxt">Submit Registration 🚀</span>
+      </button>
+
+    </div>
+  </div>
+
+  <p style="text-align:center;font-size:.68rem;color:#94a3b8;margin-top:.8rem;">
+    © 2025 College Buddy · Data is saved to Google Sheets
+  </p>
+</div>
+
+<!-- ── SUCCESS MODAL ── -->
+<div class="ov" id="modal">
+  <div class="mbox">
+    <div class="wa-ic">💬</div>
+    <h2 style="font-family:'Nunito',sans-serif;font-weight:900;color:#1b3a5c;font-size:1.3rem;">Registration Ho Gaya! 🎉</h2>
+    <p style="color:#64748b;font-size:.84rem;margin-top:.5rem;line-height:1.65;">
+      Bahut badhiya! Ab hamare <strong style="color:#25d366;">WhatsApp Group</strong> join karein aur class ki updates paayein! 👇
+    </p>
+    <a href="https://chat.whatsapp.com/JTVuAhJ56Ai5YefRpu77qQ" target="_blank" class="wa-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
+      Join WhatsApp Group
+    </a>
+    <p style="font-size:.69rem;color:#94a3b8;margin-top:.75rem;word-break:break-all;">
+      🔗 <a href="https://chat.whatsapp.com/JTVuAhJ56Ai5YefRpu77qQ" target="_blank" style="color:#52a823;">https://chat.whatsapp.com/JTVuAhJ56Ai5YefRpu77qQ</a>
+    </p>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  ✏️  STEP 1 — Apna Google Apps Script URL yahan paste karo
+// ════════════════════════════════════════════════════
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz_YEj9P3mLpN3WncLC7Ancf2J8DV5FnEYxJO47t1EPpC--kdpm5h0VxWixS166lKxY/exec';
+
+// ════════════════════════════════════════════════════
+//  ✏️  STEP 2 — Colleges ki list yahan add karo
+// ════════════════════════════════════════════════════
+const COLLEGES = [
+  "A.B.S. College, Lalganj",
+  "B.M.D. College, Dayalpur",
+  "CN College, Sahebganj",
+  "Dr. R.M.L.S. College, Muzaffarpur",
+  "J.L. College, Hajipur",
+  "J.L.N.M. College, Ghorasahan",
+  "K.C.T.C. College, Raxaul",
+  "L.N.T. College, Muzaffarpur",
+  "L.N. College, Bhagwanpur",
+  "L.N.D. College, Motihari",
+  "L.S. College, Muzaffarpur",
+  "M.S.M. Samata College, Jandah",
+  "M.S.S.G. College, Areraj",
+  "M.D.D.M. College, Muzaffarpur",
+  "M.J.K. College, Bettiah",
+  "M.P.S. Sc. College, Muzaffarpur",
+  "M.S. College, Motihari",
+  "Nitishwar College, Muzaffarpur",
+  "Indu Devi College",
+  "R.D.S. College, Muzaffarpur",
+  "R.L.S.Y. College, Bettiah",
+  "R.N. College, Hajipur",
+  "R.S.S.M. College, Sitamarhi",
+  "R.S.S. Sc. College, Sitamarhi",
+  "Rameshwar Mahavidyalaya, Muzaffarpur",
+  "S.R.A.P. College, Barachakia",
+  "S.L.K. College, Sitamarhi",
+  "S.N.S. College, Motihari",
+  "S.R.K.G. College, Sitamarhi",
+  "Vaishali Institute of Business and Rural Management, Muzaffarpur",
+  "Other",
+];
+
+// ── Auto-populate college dropdown ──────────────────
+(function(){
+  const sel = document.getElementById('f-college');
+  COLLEGES.forEach((c, i) => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = (i + 1) + '. ' + c;
+    sel.appendChild(opt);
+  });
+})();
+
+// ── Read ?ref= from URL ──────────────────────────────
+(function(){
+  const ref = new URLSearchParams(window.location.search).get('ref');
+  if (ref) {
+    const name = decodeURIComponent(ref);
+    document.getElementById('refName').textContent = name;
+    document.getElementById('refBar').style.display = 'flex';
+  }
+})();
+
+// ── Radio pill highlight ─────────────────────────────
+document.querySelectorAll('.rp input[type=radio]').forEach(inp => {
+  inp.addEventListener('change', function () {
+    document.querySelectorAll(`input[name="${this.name}"]`)
+      .forEach(i => i.closest('.rp').classList.remove('sel'));
+    this.closest('.rp').classList.add('sel');
+  });
+});
+
+// ── Progress bar ─────────────────────────────────────
+function updateProgress() {
+  let done = 0;
+  if (document.getElementById('f-name').value.trim())   done++;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('f-email').value.trim())) done++;
+  if (/^\d{10}$/.test(document.getElementById('f-mobile').value.trim())) done++;
+  if (document.getElementById('f-college').value)       done++;
+  if (document.querySelector('input[name="laptop"]:checked')) done++;
+  if (document.getElementById('f-feedback').value.trim()) done++;
+  const pct = Math.round(done / 6 * 100);
+  document.getElementById('pg').style.width = pct + '%';
+  document.getElementById('pg-t').textContent = pct < 100 ? pct + '% completed' : '✅ All done!';
+}
+document.addEventListener('input', updateProgress);
+document.addEventListener('change', updateProgress);
+
+// ── Validate ─────────────────────────────────────────
+function validate() {
+  let ok = true;
+  const show = (id, v) => document.getElementById(id).style.display = v ? 'block' : 'none';
+  const flag = (id, v) => { const el = document.getElementById(id); if(el){ v ? el.classList.add('err') : el.classList.remove('err'); }};
+
+  const name = document.getElementById('f-name').value.trim();
+  flag('f-name', !name); show('e-name', !name); if (!name) ok = false;
+
+  const email = document.getElementById('f-email').value.trim();
+  const eOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  flag('f-email', !eOk); show('e-email', !eOk); if (!eOk) ok = false;
+
+  const mob = document.getElementById('f-mobile').value.trim();
+  const mOk = /^\d{10}$/.test(mob);
+  flag('f-mobile', !mOk); show('e-mobile', !mOk); if (!mOk) ok = false;
+
+  const col = document.getElementById('f-college').value;
+  flag('f-college', !col); show('e-college', !col); if (!col) ok = false;
+
+  const lap = document.querySelector('input[name="laptop"]:checked');
+  show('e-laptop', !lap); if (!lap) ok = false;
+
+  const fb = document.getElementById('f-feedback').value.trim();
+  flag('f-feedback', !fb); show('e-feedback', !fb); if (!fb) ok = false;
+
+  return ok;
+}
+
+// ── Submit ───────────────────────────────────────────
+async function submitForm() {
+  if (!validate()) {
+    document.querySelector('.err')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const btn  = document.getElementById('subBtn');
+  const sp   = document.getElementById('spin');
+  const btxt = document.getElementById('btxt');
+  btn.disabled = true; sp.style.display = 'block'; btxt.style.display = 'none';
+
+  const referredBy = decodeURIComponent(new URLSearchParams(window.location.search).get('ref') || '');
+
+  const payload = {
+    timestamp:  new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    name:       document.getElementById('f-name').value.trim(),
+    email:      document.getElementById('f-email').value.trim(),
+    mobile:     document.getElementById('f-mobile').value.trim(),
+    college:    document.getElementById('f-college').value,
+    laptop:     document.querySelector('input[name="laptop"]:checked')?.value || '',
+    referredBy: referredBy,
+    feedback:   document.getElementById('f-feedback').value.trim()
+  };
+
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (_) {}
+
+  btn.disabled = false; sp.style.display = 'none'; btxt.style.display = 'inline';
+  document.getElementById('modal').classList.add('on');
+}
+</script>
+</body>
+</html>
