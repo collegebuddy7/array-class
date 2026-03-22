@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Caller Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    h1, h2, .display { font-family: 'Syne', sans-serif; }
+    body { background: #0f0f11; color: #f0ede8; min-height: 100vh; }
+
+    .upload-zone {
+      border: 2px dashed #3a3a4a;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .upload-zone.drag-over {
+      border-color: #f5c542;
+      background: rgba(245,197,66,0.05);
+    }
+
+    .card {
+      background: #1a1a22;
+      border: 1px solid #2a2a35;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .card:hover { transform: translateY(-2px); border-color: #444; }
+    .card.done { border-left: 4px solid #22c55e; }
+
+    .pill-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      text-decoration: none; transition: opacity 0.15s, transform 0.1s;
+    }
+    .pill-btn:hover { opacity: 0.85; transform: scale(1.04); }
+    .call-btn  { background: #2563eb; color: #fff; }
+    .wa-btn    { background: #16a34a; color: #fff; }
+
+    .caller-chip {
+      padding: 6px 14px; border-radius: 999px;
+      border: 1.5px solid #333; cursor: pointer;
+      font-size: 13px; font-weight: 500; transition: all 0.15s;
+      background: transparent; color: #aaa;
+    }
+    .caller-chip.active { background: #f5c542; color: #0f0f11; border-color: #f5c542; }
+    .caller-chip:hover:not(.active) { border-color: #666; color: #eee; }
+
+    .done-badge {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+      background: #16a34a22; color: #4ade80;
+      padding: 2px 8px; border-radius: 999px;
+    }
+
+    .page-btn {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      background: #1a1a22; border: 1px solid #2a2a35;
+      color: #aaa; transition: all 0.15s;
+    }
+    .page-btn:hover:not(.disabled) { border-color: #f5c542; color: #f5c542; }
+    .page-btn.active { background: #f5c542; color: #0f0f11; border-color: #f5c542; }
+    .page-btn.disabled { opacity: 0.3; cursor: default; }
+
+    .accent { color: #f5c542; }
+    .tag-bar { background: #13131a; border-bottom: 1px solid #1e1e28; }
+
+    /* progress bar */
+    .prog-track { background: #2a2a35; border-radius: 99px; height: 6px; }
+    .prog-fill  { background: #f5c542; border-radius: 99px; height: 6px; transition: width 0.4s; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ UPLOAD SCREEN ═══════════════════ -->
+<div id="uploadScreen" class="min-h-screen flex flex-col items-center justify-center px-4">
+  <div class="w-full max-w-lg">
+    <div class="mb-8 text-center">
+      <div class="text-5xl mb-3">📞</div>
+      <h1 class="text-4xl font-black accent mb-1">CallerDash</h1>
+      <p class="text-gray-400 text-sm">Upload your CSV to get started. Data persists locally.</p>
+    </div>
+
+    <div id="uploadZone" class="upload-zone rounded-2xl p-10 flex flex-col items-center gap-4 cursor-pointer mb-4" onclick="document.getElementById('csvInput').click()">
+      <svg width="40" height="40" fill="none" stroke="#f5c542" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 20h16"/></svg>
+      <div class="text-center">
+        <p class="text-white font-semibold">Drop your CSV here</p>
+        <p class="text-gray-500 text-sm mt-1">or click to browse · Name, Mobile, College, Caller</p>
+      </div>
+    </div>
+    <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="handleFileUpload(event)"/>
+
+    <p id="uploadError" class="text-red-400 text-sm text-center hidden"></p>
+
+    <div id="existingDataBar" class="hidden mt-4 bg-green-900/30 border border-green-700/40 rounded-xl px-4 py-3 flex items-center justify-between">
+      <span class="text-green-300 text-sm">✅ Previous data found</span>
+      <div class="flex gap-2">
+        <button onclick="loadExistingData()" class="text-xs bg-green-700 text-white px-3 py-1.5 rounded-lg font-medium hover:bg-green-600 transition">Load</button>
+        <button onclick="clearAllData()" class="text-xs bg-red-900/50 text-red-300 border border-red-700/40 px-3 py-1.5 rounded-lg font-medium hover:bg-red-800/50 transition">Clear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DASHBOARD SCREEN ═══════════════════ -->
+<div id="dashScreen" class="hidden min-h-screen flex flex-col">
+
+  <!-- Top bar -->
+  <header class="tag-bar sticky top-0 z-20 px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">📞</span>
+      <h1 class="text-lg font-black accent tracking-tight">CallerDash</h1>
+      <span id="headerStats" class="text-xs text-gray-500 hidden sm:block"></span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="uploadNew()" class="text-xs border border-gray-700 text-gray-300 px-3 py-1.5 rounded-lg hover:border-gray-500 transition">↑ New CSV</button>
+      <button onclick="clearAllData()" class="text-xs border border-red-800/60 text-red-400 px-3 py-1.5 rounded-lg hover:border-red-600 transition">🗑 Clear Data</button>
+    </div>
+  </header>
+
+  <!-- Caller filter -->
+  <div class="tag-bar px-4 py-3 flex items-center gap-2 flex-wrap border-t border-white/5">
+    <span class="text-xs text-gray-500 mr-1 uppercase tracking-widest">Caller:</span>
+    <div id="callerChips" class="flex flex-wrap gap-2"></div>
+  </div>
+
+  <!-- Progress + search -->
+  <div class="px-4 pt-4 pb-2 flex items-center gap-4 flex-wrap">
+    <div class="flex-1 min-w-48">
+      <div class="flex justify-between text-xs text-gray-400 mb-1">
+        <span id="progressLabel">Progress</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="prog-track"><div id="progressFill" class="prog-fill" style="width:0%"></div></div>
+    </div>
+    <input id="searchBox" type="text" placeholder="Search name / college…"
+      class="bg-[#1a1a22] border border-[#2a2a35] rounded-xl px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500/60 w-48"
+      oninput="onSearch()"/>
+    <label class="flex items-center gap-2 text-sm text-gray-400 cursor-pointer select-none">
+      <input type="checkbox" id="hideDone" onchange="renderCards()" class="accent-yellow-400"/>
+      Hide done
+    </label>
+  </div>
+
+  <!-- Cards grid -->
+  <main class="flex-1 px-4 pb-4">
+    <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-2"></div>
+    <div id="emptyState" class="hidden text-center text-gray-600 py-20 text-sm">No students found.</div>
+  </main>
+
+  <!-- Pagination -->
+  <div id="paginationBar" class="tag-bar sticky bottom-0 px-4 py-3 flex items-center justify-center gap-2 border-t border-white/5 flex-wrap"></div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const STORAGE_KEY   = 'callerDash_data';
+const DONE_KEY      = 'callerDash_done';
+const CALLER_KEY    = 'callerDash_activeCaller';
+const PAGE_SIZE     = 12;
+
+let allStudents     = [];     // full parsed list
+let callerNames     = [];
+let activeCaller    = '';
+let calledSet       = new Set();
+let currentPage     = 1;
+let searchQuery     = '';
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) document.getElementById('existingDataBar').classList.remove('hidden');
+
+  // drag-drop
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  });
+});
+
+function loadExistingData() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return;
+  allStudents  = JSON.parse(raw);
+  calledSet    = new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+  activeCaller = localStorage.getItem(CALLER_KEY) || '';
+  initDash();
+}
+
+// ── File handling ──────────────────────────────────────────────────────────
+function handleFileUpload(e) { processFile(e.target.files[0]); }
+
+function processFile(file) {
+  if (!file || !file.name.endsWith('.csv')) return showError('Please upload a .csv file');
+  const reader = new FileReader();
+  reader.onload = ev => parseCSV(ev.target.result);
+  reader.readAsText(file);
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) return showError('CSV is empty or has no data rows.');
+
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, ''));
+  const idx = { name: -1, mobile: -1, college: -1, caller: -1 };
+  headers.forEach((h, i) => {
+    if (h === 'name')    idx.name    = i;
+    if (h === 'mobile')  idx.mobile  = i;
+    if (h === 'college') idx.college = i;
+    if (h === 'caller')  idx.caller  = i;
+  });
+
+  if (idx.name < 0 || idx.mobile < 0 || idx.caller < 0)
+    return showError('CSV must have columns: Name, Mobile, Caller (and optionally College).');
+
+  allStudents = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = splitCSVLine(lines[i]);
+    if (!cols[idx.name] && !cols[idx.mobile]) continue;
+    allStudents.push({
+      id:      i,
+      name:    (cols[idx.name]    || '').trim(),
+      mobile:  (cols[idx.mobile]  || '').trim(),
+      college: (cols[idx.college] || '').trim(),
+      caller:  (cols[idx.caller]  || '').trim(),
+    });
+  }
+
+  if (!allStudents.length) return showError('No valid rows found.');
+
+  calledSet    = new Set();
+  activeCaller = '';
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(allStudents));
+  localStorage.setItem(DONE_KEY, '[]');
+  localStorage.removeItem(CALLER_KEY);
+  initDash();
+}
+
+function splitCSVLine(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (const ch of line) {
+    if (ch === '"') { inQ = !inQ; }
+    else if (ch === ',' && !inQ) { result.push(cur); cur = ''; }
+    else cur += ch;
+  }
+  result.push(cur);
+  return result;
+}
+
+function showError(msg) {
+  const el = document.getElementById('uploadError');
+  el.textContent = msg; el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 4000);
+}
+
+// ── Dashboard init ─────────────────────────────────────────────────────────
+function initDash() {
+  document.getElementById('uploadScreen').classList.add('hidden');
+  document.getElementById('dashScreen').classList.remove('hidden');
+
+  callerNames = [...new Set(allStudents.map(s => s.caller).filter(Boolean))].sort();
+  if (!activeCaller && callerNames.length) activeCaller = callerNames[0];
+
+  buildCallerChips();
+  currentPage = 1; searchQuery = '';
+  renderCards();
+}
+
+function buildCallerChips() {
+  const container = document.getElementById('callerChips');
+  container.innerHTML = '';
+  callerNames.forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = `caller-chip${name === activeCaller ? ' active' : ''}`;
+    btn.textContent = name;
+    btn.onclick = () => selectCaller(name);
+    container.appendChild(btn);
+  });
+}
+
+function selectCaller(name) {
+  activeCaller = name;
+  localStorage.setItem(CALLER_KEY, name);
+  document.querySelectorAll('.caller-chip').forEach(b => {
+    b.classList.toggle('active', b.textContent === name);
+  });
+  currentPage = 1;
+  renderCards();
+}
+
+// ── Filtering + rendering ──────────────────────────────────────────────────
+function getFiltered() {
+  const q = searchQuery.toLowerCase();
+  const hideDone = document.getElementById('hideDone')?.checked;
+  return allStudents.filter(s => {
+    if (activeCaller && s.caller !== activeCaller) return false;
+    if (hideDone && calledSet.has(s.id)) return false;
+    if (q && !s.name.toLowerCase().includes(q) && !s.college.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function renderCards() {
+  const filtered = getFiltered();
+  const grid = document.getElementById('cardsGrid');
+  const empty = document.getElementById('emptyState');
+
+  // progress
+  const callerStudents = allStudents.filter(s => s.caller === activeCaller);
+  const doneCount      = callerStudents.filter(s => calledSet.has(s.id)).length;
+  const total          = callerStudents.length;
+  const pct            = total ? Math.round(doneCount / total * 100) : 0;
+  document.getElementById('progressLabel').textContent = `${doneCount} / ${total} called`;
+  document.getElementById('progressPct').textContent   = pct + '%';
+  document.getElementById('progressFill').style.width  = pct + '%';
+  document.getElementById('headerStats').textContent   = `${total} students · ${doneCount} done`;
+
+  // paginate
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const page  = filtered.slice(start, start + PAGE_SIZE);
+
+  if (!page.length) {
+    grid.innerHTML = ''; empty.classList.remove('hidden');
+  } else {
+    empty.classList.add('hidden');
+    grid.innerHTML = page.map(s => cardHTML(s)).join('');
+  }
+
+  buildPagination(totalPages);
+}
+
+function cardHTML(s) {
+  const done = calledSet.has(s.id);
+  const mobile = s.mobile.replace(/\D/g, '');
+  return `
+  <div class="card rounded-2xl p-4 flex flex-col gap-3 ${done ? 'done' : ''}">
+    <div class="flex items-start justify-between gap-2">
+      <div>
+        <h2 class="text-xl font-black text-white leading-tight">${esc(s.name)}</h2>
+        ${s.college ? `<p class="text-gray-500 text-sm mt-0.5">${esc(s.college)}</p>` : ''}
+      </div>
+      ${done ? `<span class="done-badge shrink-0">✓ Done</span>` : ''}
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+      <span class="text-gray-300 text-sm font-mono tracking-wide">${esc(s.mobile)}</span>
+    </div>
+    <div class="flex items-center gap-2 mt-auto pt-1 flex-wrap">
+      <a href="tel:${mobile}" onclick="markDone(${s.id})" class="pill-btn call-btn">
+        <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        Call
+      </a>
+      <a href="https://wa.me/${mobile}" target="_blank" onclick="markDone(${s.id})" class="pill-btn wa-btn">
+        <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.091.535 4.06 1.472 5.785L0 24l6.348-1.453A11.964 11.964 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.016-1.373l-.358-.214-3.718.851.876-3.625-.234-.372A9.818 9.818 0 112 12 9.818 9.818 0 0112 21.818z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>`;
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function markDone(id) {
+  calledSet.add(id);
+  localStorage.setItem(DONE_KEY, JSON.stringify([...calledSet]));
+  setTimeout(() => renderCards(), 300);
+}
+
+// ── Search ─────────────────────────────────────────────────────────────────
+let searchTimer;
+function onSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchQuery = document.getElementById('searchBox').value;
+    currentPage = 1;
+    renderCards();
+  }, 200);
+}
+
+// ── Pagination ─────────────────────────────────────────────────────────────
+function buildPagination(total) {
+  const bar = document.getElementById('paginationBar');
+  if (total <= 1) { bar.innerHTML = ''; return; }
+
+  const pages = pagesToShow(currentPage, total);
+  let html = `<button class="page-btn ${currentPage===1?'disabled':''}" onclick="goPage(${currentPage-1})">‹</button>`;
+  pages.forEach(p => {
+    if (p === '…') html += `<span class="page-btn disabled">…</span>`;
+    else html += `<button class="page-btn${p===currentPage?' active':''}" onclick="goPage(${p})">${p}</button>`;
+  });
+  html += `<button class="page-btn ${currentPage===total?'disabled':''}" onclick="goPage(${currentPage+1})">›</button>`;
+  bar.innerHTML = html;
+}
+
+function pagesToShow(cur, total) {
+  if (total <= 7) return Array.from({length: total}, (_, i) => i+1);
+  const pages = [1];
+  if (cur > 3) pages.push('…');
+  for (let p = Math.max(2, cur-1); p <= Math.min(total-1, cur+1); p++) pages.push(p);
+  if (cur < total - 2) pages.push('…');
+  pages.push(total);
+  return pages;
+}
+
+function goPage(p) {
+  const filtered = getFiltered();
+  const total = Math.ceil(filtered.length / PAGE_SIZE);
+  if (p < 1 || p > total) return;
+  currentPage = p;
+  renderCards();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Utilities ──────────────────────────────────────────────────────────────
+function uploadNew() {
+  document.getElementById('dashScreen').classList.add('hidden');
+  document.getElementById('uploadScreen').classList.remove('hidden');
+  document.getElementById('csvInput').value = '';
+}
+
+function clearAllData() {
+  if (!confirm('Clear all stored data?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(DONE_KEY);
+  localStorage.removeItem(CALLER_KEY);
+  allStudents = []; calledSet = new Set(); activeCaller = '';
+  document.getElementById('dashScreen').classList.add('hidden');
+  document.getElementById('uploadScreen').classList.remove('hidden');
+  document.getElementById('existingDataBar').classList.add('hidden');
+}
+</script>
+</body>
+</html>
