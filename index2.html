@@ -19,7 +19,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);min-height:100vh;padd
 /* ── NAV ── */
 nav{background:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(27,58,92,.1);border-bottom:1.5px solid #e8edf3;}
 .nav-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:.7rem;padding:.45rem 1rem;}
-.nav-logo{height:44px;object-fit:contain;flex-shrink:0; padding: 3px;}
+.nav-logo{height:44px;object-fit:contain;flex-shrink:0;}
 .nav-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.95rem;flex:1;}
 .nav-badge{background:var(--gold);color:var(--navy);font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;padding:.22rem .65rem;border-radius:99px;white-space:nowrap;}
 
@@ -201,92 +201,67 @@ hr.dv{border:none;border-top:2px solid #f1f5f9;}
   <p style="text-align:center;font-size:.68rem;color:#94a3b8;margin-top:.75rem;">© 2025 College Buddy · Data saved securely</p>
 </div>
 
-<!-- ── SUCCESS SECTION ── -->
+<!-- ── SUCCESS SECTION (hidden until submit) ── -->
 <div class="success-screen" id="successSection">
+
   <div class="success-card">
 
-    <!-- Green header -->
+    <!-- Top green strip -->
     <div style="background:linear-gradient(135deg,var(--green),var(--green2));padding:1.4rem 1.5rem;text-align:center;">
-      <div style="font-size:2.4rem;margin-bottom:.3rem;">🎉</div>
+      <div style="font-size:2.5rem;margin-bottom:.3rem;">🎉</div>
       <h2 style="font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:1.35rem;">Registration Ho Gaya!</h2>
-      <p style="color:rgba(255,255,255,.82);font-size:.82rem;margin-top:.2rem;">Aaj sham 7 baje taiyaar rehna 🕖</p>
+      <p style="color:rgba(255,255,255,.8);font-size:.82rem;margin-top:.25rem;">Aaj sham 7 baje taiyaar rehna 🕖</p>
     </div>
 
     <div class="cs">
 
-      <!-- Ref code -->
+      <!-- YOUR REF CODE -->
       <div class="ref-code-box">
         <div class="ref-code-label">🔗 Aapka Referral Code</div>
         <div class="ref-code-value" id="myRefCode">—</div>
-        <div class="ref-code-sub">Yeh code aapka unique share link hai</div>
+        <div class="ref-code-sub">Friends ke saath share karo</div>
       </div>
 
-      <hr class="dv" style="margin:1.1rem 0;"/>
+      <hr class="dv" style="margin-bottom:1.1rem;"/>
 
-      <!-- Instruction -->
-      <div style="font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;margin-bottom:.4rem;">📲 5 Doston ko Share Karo!</div>
-      <p style="font-size:.8rem;color:#64748b;line-height:1.6;margin-bottom:1.1rem;">
-        Neeche wala message copy karke ya <strong>Share on WhatsApp</strong> button se apne 5 dosto ko bhejo. Ek baar share karo — aur <strong style="color:var(--green2);">WhatsApp Group ka link</strong> unlock ho jayega! 👇
+      <!-- SHARE WITH 5 FRIENDS -->
+      <div class="share-title">📲 5 Doston ko Share Karo!</div>
+      <p style="font-size:.8rem;color:#64748b;margin-bottom:.85rem;line-height:1.55;">
+        Apne 5 dosto ko yeh class ke baare mein batao. Neeche WhatsApp button se seedha message bhejo! 👇
       </p>
 
-      <!-- ── WHATSAPP BUBBLE ── -->
-      <div style="background:#e5f8e0;border-radius:14px;padding:.75rem .75rem 1.1rem;position:relative;margin-bottom:.5rem;">
-
-        <!-- Chat header mock -->
-        <div style="display:flex;align-items:center;gap:.5rem;padding-bottom:.6rem;border-bottom:1px solid rgba(0,0,0,.07);margin-bottom:.75rem;">
-          <div style="width:32px;height:32px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;">👥</div>
-          <div>
-            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;color:#1a1a1a;">College Buddy Friends</div>
-            <div style="font-size:.68rem;color:#6b7280;">Aapka personal share message</div>
-          </div>
+      <!-- Friends progress -->
+      <div class="friends-progress">
+        <div class="fp-label">
+          <span>Friends invited</span>
+          <span id="friendCount">0 / 5</span>
         </div>
+        <div class="fp-bar"><div class="fp-fill" id="fpFill"></div></div>
+      </div>
 
-        <!-- Bubble -->
-        <div style="display:flex;justify-content:flex-end;">
-          <div style="background:#dcf8c6;border-radius:14px 2px 14px 14px;padding:.75rem .9rem;max-width:88%;box-shadow:0 1px 3px rgba(0,0,0,.1);position:relative;">
-
-            <!-- Tail -->
-            <div style="position:absolute;top:0;right:-7px;width:0;height:0;border-left:8px solid #dcf8c6;border-bottom:8px solid transparent;"></div>
-
-            <!-- Message text -->
-            <div id="waMessageBubble" style="font-size:.84rem;color:#111;line-height:1.7;white-space:pre-wrap;word-break:break-word;"></div>
-
-            <!-- Time tick -->
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:.25rem;margin-top:.4rem;">
-              <span style="font-size:.65rem;color:#6b7280;" id="msgTime"></span>
-              <svg width="14" height="10" viewBox="0 0 16 11" fill="none"><path d="M1 5.5L5 9.5L15 1.5" stroke="#4FC3F7" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5.5L9 9.5L15 3" stroke="#4FC3F7" stroke-width="1.8" stroke-linecap="round"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Copy button inside bubble area -->
-        <div style="display:flex;justify-content:flex-end;margin-top:.5rem;">
-          <button id="copyMsgBtn" onclick="copyMessage()" style="background:rgba(0,0,0,.08);border:none;border-radius:7px;padding:.3rem .75rem;font-size:.72rem;font-weight:700;color:#374151;cursor:pointer;font-family:'Nunito',sans-serif;transition:background .15s;">📋 Copy Message</button>
+      <!-- Message preview -->
+      <div style="margin:1rem 0 .5rem;">
+        <p style="font-size:.75rem;font-weight:600;color:#64748b;margin-bottom:.4rem;">📋 Message jo jayega:</p>
+        <div class="msg-box" id="previewMsg">
+          <button class="copy-btn" id="copyMsgBtn" onclick="copyMessage()">Copy</button>
+          <span id="msgText"></span>
         </div>
       </div>
 
-      <!-- ── SHARE BUTTON ── -->
-      <button id="mainShareBtn" onclick="shareOnWhatsApp()" style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:12px;padding:.9rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.55rem;box-shadow:0 4px 16px rgba(37,211,102,.38);transition:transform .15s;margin-top:.75rem;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
-        Share on WhatsApp
-      </button>
+      <!-- 5 Friend Share Buttons -->
+      <div class="friend-cards" id="friendCards">
+        <!-- injected by JS -->
+      </div>
 
-      <!-- ── JOIN GROUP (hidden until shared) ── -->
-      <div id="joinGroupSection" style="display:none;margin-top:1.1rem;animation:up .4s ease both;">
-        <div style="background:linear-gradient(135deg,#f0fae8,#e8f4ff);border:2px solid #b6dfa0;border-radius:14px;padding:1.1rem;text-align:center;">
-          <div style="font-size:1.8rem;margin-bottom:.35rem;">🎊</div>
-          <div style="font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;margin-bottom:.3rem;">Ab Group Join Karo!</div>
-          <p style="font-size:.79rem;color:#64748b;line-height:1.55;margin-bottom:.85rem;">Share ho gaya! Ab WhatsApp Group join karo aur class ki saari updates pao 🔔</p>
-          <a href="https://chat.whatsapp.com/JTVuAhJ56Ai5YefRpu77qQ" target="_blank"
-             style="display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;text-decoration:none;border-radius:11px;padding:.75rem 1.5rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;box-shadow:0 4px 14px rgba(37,211,102,.38);">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
-            Join WhatsApp Group
-          </a>
-        </div>
+      <div id="allSharedMsg" style="display:none;margin-top:1rem;background:#f0fae8;border:1.5px solid #b6dfa0;border-radius:11px;padding:.85rem;text-align:center;">
+        <div style="font-size:1.5rem;">🏆</div>
+        <p style="font-family:'Nunito',sans-serif;font-weight:800;color:var(--green2);font-size:.95rem;margin-top:.3rem;">Sab ko share kar diya!</p>
+        <p style="font-size:.78rem;color:#64748b;margin-top:.25rem;">Bahut badhiya! Aapke saare friends ko invite mil gaya. 🎓</p>
       </div>
 
     </div>
   </div>
+
   <p style="text-align:center;font-size:.68rem;color:#94a3b8;margin-top:.75rem;padding-bottom:1rem;">© 2025 College Buddy</p>
 </div>
 
@@ -458,23 +433,20 @@ async function submitForm(){
   showSuccess();
 }
 
-// ── SHOW SUCCESS ─────────────────────────────────────
+// ── SHOW SUCCESS + BUILD SHARE CARDS ─────────────────
+let sharedCount = 0;
+
 function showSuccess(){
+  // Hide form, show success
   document.getElementById('formSection').style.display = 'none';
   const ss = document.getElementById('successSection');
   ss.style.display = 'block';
   ss.scrollIntoView({behavior:'smooth', block:'start'});
 
-  // Ref code
+  // Show ref code
   document.getElementById('myRefCode').textContent = myRefCode;
 
-  // Set time in bubble
-  const now = new Date();
-  document.getElementById('msgTime').textContent =
-    now.getHours().toString().padStart(2,'0') + ':' +
-    now.getMinutes().toString().padStart(2,'0');
-
-  // Build the exact message
+  // Build WhatsApp message
   const refLink = PAGE_URL + '?ref=' + encodeURIComponent(myRefCode);
   const waMsg =
 `Hi Buddy 👋
@@ -482,48 +454,67 @@ function showSuccess(){
 Maine Array Class ke liye register kar liya hai, tum bhi kar lo 📚
 Dhyan rakhna, Aaj Sham 7 Baje se 🕖
 
-Registration Link: ${refLink}
+Mere Link: ${refLink}
 
 Abhi register kar lo !! 🚀`;
 
-  // Store globally for share + copy
-  window._waMsg = waMsg;
+  document.getElementById('msgText').textContent = waMsg;
 
-  // Render in WhatsApp bubble
-  document.getElementById('waMessageBubble').textContent = waMsg;
+  // Build friend share cards
+  const container = document.getElementById('friendCards');
+  container.innerHTML = '';
+  for(let i = 1; i <= 5; i++){
+    const card = document.createElement('div');
+    card.className = 'friend-card';
+    card.id = 'fc-' + i;
+    card.innerHTML = `
+      <div class="friend-num" id="fn-${i}">${i}</div>
+      <div class="friend-label" id="fl-${i}">Friend ${i}</div>
+      <button class="wa-share-btn" onclick="shareOnWhatsApp(${i}, \`${waMsg.replace(/`/g,'\\`')}\`)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
+        Share
+      </button>`;
+    container.appendChild(card);
+  }
 }
 
-// ── WHATSAPP SHARE (single button) ───────────────────
-function shareOnWhatsApp(){
-  const url = 'https://wa.me/?text=' + encodeURIComponent(window._waMsg);
+// ── WHATSAPP SHARE ───────────────────────────────────
+function shareOnWhatsApp(num, msg){
+  const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
   window.open(url, '_blank');
 
-  // Reveal Join Group after click
+  // Mark as shared
   setTimeout(() => {
-    const joinSec = document.getElementById('joinGroupSection');
-    joinSec.style.display = 'block';
-    joinSec.scrollIntoView({behavior:'smooth', block:'center'});
+    const card = document.getElementById('fc-' + num);
+    const btn  = card.querySelector('.wa-share-btn');
+    card.classList.add('shared');
+    btn.classList.add('done');
+    btn.innerHTML = '✓ Sent';
+    btn.onclick = null;
+    document.getElementById('fl-' + num).textContent = 'Shared ✓';
+    sharedCount++;
+    updateFriendProgress();
+  }, 1000);
+}
 
-    // Change share button to "Shared ✓"
-    const btn = document.getElementById('mainShareBtn');
-    btn.style.background = '#94a3b8';
-    btn.innerHTML = '✓ Shared! Ab Group Join Karo 👆';
-    btn.style.boxShadow = 'none';
-  }, 800);
+// ── FRIEND PROGRESS ──────────────────────────────────
+function updateFriendProgress(){
+  document.getElementById('friendCount').textContent = sharedCount + ' / 5';
+  document.getElementById('fpFill').style.width = (sharedCount / 5 * 100) + '%';
+  if(sharedCount >= 5){
+    document.getElementById('allSharedMsg').style.display = 'block';
+    document.getElementById('allSharedMsg').scrollIntoView({behavior:'smooth',block:'center'});
+  }
 }
 
 // ── COPY MESSAGE ─────────────────────────────────────
 function copyMessage(){
-  navigator.clipboard.writeText(window._waMsg || '').then(() => {
+  const text = document.getElementById('msgText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('copyMsgBtn');
-    btn.textContent = '✓ Copied!';
-    btn.style.background = 'rgba(82,168,35,.2)';
-    btn.style.color = '#3d8019';
-    setTimeout(() => {
-      btn.textContent = '📋 Copy Message';
-      btn.style.background = 'rgba(0,0,0,.08)';
-      btn.style.color = '#374151';
-    }, 2200);
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
 }
 </script>
