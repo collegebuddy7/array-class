@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mentor Dashboard – College Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#1b3a5c; --green:#52a823; --green2:#3d8019; --gold:#f5a623; --bg:#f0f4f8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Poppins',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:72px;}
+
+/* ── TOP NAV ── */
+nav.top-nav{background:#fff;box-shadow:0 2px 12px rgba(27,58,92,.1);border-bottom:1.5px solid #e8edf3;position:sticky;top:0;z-index:100;}
+.nav-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:.7rem;padding:.5rem 1rem;}
+.nav-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;flex:1;}
+.nav-badge{background:var(--navy);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;padding:.22rem .65rem;border-radius:99px;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid #e8edf3;box-shadow:0 -2px 16px rgba(27,58,92,.1);display:none;z-index:200;}
+.bn-inner{max-width:600px;margin:0 auto;display:flex;}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.55rem .3rem .45rem;cursor:pointer;color:#94a3b8;gap:.15rem;border:none;background:none;font-family:'Poppins',sans-serif;transition:color .2s;}
+.bn-item.active{color:var(--green);}
+.bn-item:hover{color:var(--navy);}
+.bn-icon{font-size:1.3rem;line-height:1;}
+.bn-label{font-size:.58rem;font-weight:600;letter-spacing:.02em;}
+
+/* ── LOGIN ── */
+#loginScreen{max-width:420px;margin:2.5rem auto;padding:0 1rem;}
+.login-card{background:#fff;border-radius:20px;box-shadow:0 4px 28px rgba(27,58,92,.1);overflow:hidden;}
+.login-header{background:linear-gradient(135deg,var(--navy),#254e7a);padding:1.75rem;text-align:center;}
+.login-header h2{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:1.4rem;}
+.login-header p{color:rgba(255,255,255,.65);font-size:.79rem;margin-top:.25rem;}
+.lbody{padding:1.5rem;}
+.field{margin-bottom:1rem;}
+.lbl{display:block;font-weight:600;font-size:.82rem;color:#334155;margin-bottom:.3rem;}
+.fi{width:100%;border:2px solid #e2e8f0;border-radius:10px;padding:.65rem .9rem;font-family:'Poppins',sans-serif;font-size:.87rem;color:#1e293b;background:#f8fafc;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(82,168,35,.13);}
+.err-box{background:#fff3f3;border:1.5px solid #fca5a5;border-radius:9px;padding:.58rem .85rem;color:#991b1b;font-size:.79rem;font-weight:600;margin-bottom:.9rem;display:none;}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:12px;padding:.9rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;box-shadow:0 4px 16px rgba(82,168,35,.35);transition:transform .15s;}
+.login-btn:hover{transform:translateY(-1px);}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.spin{width:16px;height:16px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ── PAGES ── */
+.page{display:none;max-width:600px;margin:0 auto;padding:1.1rem 1rem 1.5rem;}
+.page.active{display:block;}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── AGENT HEADER ── */
+.agent-header{background:linear-gradient(135deg,var(--navy),#254e7a);border-radius:16px;padding:1.1rem 1.2rem;display:flex;align-items:center;gap:.85rem;margin-bottom:1rem;animation:up .35s ease;}
+.agent-avatar{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.agent-name{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:1.08rem;}
+.agent-code-label{color:rgba(255,255,255,.55);font-size:.7rem;margin-top:.1rem;}
+.agent-code-val{color:#a8e063;font-weight:700;font-size:.82rem;}
+.logout-btn{margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:.3rem .65rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.logout-btn:hover{background:rgba(255,255,255,.25);}
+
+/* ── PLATFORM TOTAL ── */
+.platform-card{background:linear-gradient(135deg,#f5a623,#e8921a);border-radius:14px;padding:.9rem 1rem;box-shadow:0 2px 14px rgba(245,166,35,.3);margin-bottom:1rem;display:flex;align-items:center;gap:.85rem;animation:up .4s ease .05s both;}
+.platform-icon{font-size:1.9rem;flex-shrink:0;}
+.platform-lbl{font-size:.68rem;color:rgba(255,255,255,.82);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+.platform-val{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.85rem;color:#fff;line-height:1.1;}
+.platform-sub{font-size:.66rem;color:rgba(255,255,255,.72);margin-top:.04rem;}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;}
+.stat-card{background:#fff;border-radius:14px;padding:.9rem 1rem;box-shadow:0 2px 12px rgba(27,58,92,.07);animation:up .4s ease .1s both;}
+.stat-lbl{font-size:.67rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+.stat-val{font-family:'Nunito',sans-serif;font-weight:900;font-size:2rem;color:var(--navy);line-height:1.1;margin-top:.1rem;}
+.stat-sub{font-size:.66rem;color:#94a3b8;margin-top:.08rem;}
+
+/* ── LINK BOX ── */
+.link-box{background:#fff;border-radius:14px;padding:.9rem 1rem;box-shadow:0 2px 12px rgba(27,58,92,.07);margin-bottom:.75rem;animation:up .4s ease .15s both;}
+.link-box-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.87rem;margin-bottom:.55rem;}
+.link-row{display:flex;gap:.4rem;}
+.link-input{flex:1;border:2px solid #e2e8f0;border-radius:9px;padding:.5rem .75rem;font-size:.73rem;color:#475569;background:#f8fafc;outline:none;font-family:'Poppins',sans-serif;}
+.copy-lnk{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:.5rem .9rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;transition:background .15s;}
+.copy-lnk.copied{background:var(--green);}
+
+/* ── SECTION HEADER ── */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;}
+.sec-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.93rem;}
+.refresh-btn{background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;padding:.28rem .65rem;font-size:.7rem;font-weight:700;color:var(--navy);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;}
+.refresh-btn:hover{border-color:var(--green);color:var(--green2);}
+
+/* ── COLLEGE FILTER ── */
+.college-filter{display:flex;gap:.4rem;margin-bottom:.8rem;flex-wrap:wrap;}
+.cf-btn{background:#fff;border:2px solid #e2e8f0;border-radius:99px;padding:.28rem .75rem;font-size:.72rem;font-weight:700;color:#64748b;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap;}
+.cf-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.cf-btn:hover:not(.active){border-color:var(--navy);color:var(--navy);}
+
+/* ── REG LIST ── */
+.reg-list{display:flex;flex-direction:column;gap:.5rem;}
+.reg-item{background:#fff;border-radius:14px;padding:.75rem .9rem;box-shadow:0 1px 8px rgba(27,58,92,.07);animation:up .3s ease both;}
+.reg-top{display:flex;align-items:center;gap:.65rem;}
+.reg-num{width:28px;height:28px;background:linear-gradient(135deg,var(--green),var(--green2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:.7rem;color:#fff;flex-shrink:0;}
+.reg-name{font-weight:600;font-size:.85rem;color:var(--navy);}
+.reg-detail{font-size:.7rem;color:#94a3b8;margin-top:.05rem;}
+.reg-time{font-size:.63rem;color:#cbd5e1;margin-left:auto;text-align:right;flex-shrink:0;line-height:1.4;}
+.reg-actions{display:flex;gap:.4rem;margin-top:.5rem;padding-top:.5rem;border-top:1px solid #f1f5f9;}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:.3rem;border:none;border-radius:8px;padding:.38rem .4rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity .15s;}
+.act-btn:hover{opacity:.82;}
+.act-wa{background:#dcfce7;color:#16a34a;}
+.act-call{background:#dbeafe;color:#1d4ed8;}
+
+/* ── LEADERBOARD ── */
+.lb-item{background:#fff;border-radius:14px;padding:.8rem 1rem;box-shadow:0 1px 8px rgba(27,58,92,.06);display:flex;align-items:center;gap:.75rem;animation:up .3s ease both;margin-bottom:.45rem;}
+.lb-rank{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:.85rem;flex-shrink:0;}
+.lb-rank.r1{background:linear-gradient(135deg,#f5a623,#e8921a);color:#fff;}
+.lb-rank.r2{background:linear-gradient(135deg,#94a3b8,#64748b);color:#fff;}
+.lb-rank.r3{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff;}
+.lb-rank.rn{background:#f1f5f9;color:#64748b;}
+.lb-name{font-weight:700;font-size:.85rem;color:var(--navy);}
+.lb-code{font-size:.68rem;color:#94a3b8;}
+.lb-count{margin-left:auto;text-align:right;}
+.lb-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.4rem;color:var(--green);line-height:1;}
+.lb-sub{font-size:.62rem;color:#94a3b8;}
+.lb-you{background:linear-gradient(135deg,rgba(82,168,35,.07),rgba(82,168,35,.03));border:2px solid rgba(82,168,35,.25);}
+
+/* ── TEMPLATES ── */
+.tmpl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;}
+.add-tmpl-btn{background:var(--green);color:#fff;border:none;border-radius:9px;padding:.36rem .82rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 2px 8px rgba(82,168,35,.3);}
+.tmpl-card{background:#fff;border-radius:14px;padding:.8rem 1rem;box-shadow:0 1px 8px rgba(27,58,92,.06);margin-bottom:.45rem;animation:up .3s ease both;}
+.tmpl-title-row{font-weight:700;font-size:.83rem;color:var(--navy);margin-bottom:.3rem;}
+.tmpl-body-text{font-size:.75rem;color:#64748b;line-height:1.6;white-space:pre-wrap;}
+.tmpl-actions{display:flex;gap:.4rem;margin-top:.55rem;padding-top:.45rem;border-top:1px solid #f1f5f9;}
+.tmpl-copy-btn{background:#f1f5f9;color:var(--navy);border:none;border-radius:7px;padding:.3rem .7rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tmpl-wa-btn{background:#dcfce7;color:#16a34a;border:none;border-radius:7px;padding:.3rem .7rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tmpl-del-btn{background:#fff3f3;color:#dc2626;border:none;border-radius:7px;padding:.3rem .7rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-left:auto;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:600px;padding:1.4rem 1.2rem 2rem;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;margin-bottom:1rem;}
+.modal-field{margin-bottom:.85rem;}
+.modal-lbl{display:block;font-weight:600;font-size:.78rem;color:#334155;margin-bottom:.3rem;}
+.modal-input{width:100%;border:2px solid #e2e8f0;border-radius:10px;padding:.62rem .85rem;font-family:'Poppins',sans-serif;font-size:.83rem;color:#1e293b;background:#f8fafc;outline:none;resize:vertical;}
+.modal-input:focus{border-color:var(--green);}
+.modal-save{width:100%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:11px;padding:.78rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;}
+.modal-cancel{width:100%;background:#f1f5f9;color:#64748b;border:none;border-radius:11px;padding:.65rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;margin-top:.5rem;}
+
+/* ── EMPTY / STATE ── */
+.empty-box{background:#fff;border-radius:12px;padding:2rem 1rem;text-align:center;color:#94a3b8;box-shadow:0 1px 8px rgba(27,58,92,.06);}
+.state-msg{text-align:center;padding:1.5rem;color:#94a3b8;font-size:.82rem;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:.55rem 1.2rem;border-radius:99px;font-size:.78rem;font-weight:600;z-index:600;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- ── TOP NAV ── -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-title">🎓 College Buddy · Mentor Portal</div>
+    <div class="nav-badge" id="navBadge">Login</div>
+  </div>
+</nav>
+
+<!-- ── LOGIN SCREEN ── -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-header">
+      <div style="font-size:2.2rem;margin-bottom:.4rem;">🔐</div>
+      <h2>Mentor Login</h2>
+      <p>Mobile number aur password se login karein</p>
+    </div>
+    <div class="lbody">
+      <div class="err-box" id="loginErr"></div>
+      <div class="field">
+        <label class="lbl">Mobile Number</label>
+        <input type="tel" id="a-mobile" class="fi" placeholder="10-digit mobile" maxlength="10" inputmode="numeric"/>
+      </div>
+      <div class="field" style="margin-bottom:1.2rem;">
+        <label class="lbl">Password</label>
+        <input type="password" id="a-pass" class="fi" placeholder="Password enter karein"/>
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="agentLogin()">
+        <div class="spin" id="loginSpin"></div>
+        <span id="loginBtxt">Login →</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── APP SCREEN ── -->
+<div id="appScreen" style="display:none;">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="pageHome">
+    <div class="agent-header">
+      <div class="agent-avatar">👤</div>
+      <div>
+        <div class="agent-name" id="dashName">—</div>
+        <div class="agent-code-label">Referral Code: <span class="agent-code-val" id="dashCode">—</span></div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-icon">🏆</div>
+      <div>
+        <div class="platform-lbl">Platform Total</div>
+        <div class="platform-val" id="platformTotal">—</div>
+        <div class="platform-sub">registrations across all mentors</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-lbl">My Referrals</div>
+        <div class="stat-val" id="statTotal">—</div>
+        <div class="stat-sub">via your link</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Latest Lead</div>
+        <div class="stat-val" id="statLatest" style="font-size:1rem;margin-top:.35rem;color:#64748b;">—</div>
+        <div class="stat-sub">most recent signup</div>
+      </div>
+    </div>
+
+    <div class="link-box">
+      <div class="link-box-title">🔗 Aapka Referral Link</div>
+      <div class="link-row">
+        <input type="text" id="agentRefLink" class="link-input" readonly/>
+        <button class="copy-lnk" id="copyLinkBtn" onclick="copyRefLink()">Copy 📋</button>
+      </div>
+    </div>
+
+    <button onclick="shareRefLinkWA()" style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:12px;padding:.78rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 3px 12px rgba(37,211,102,.35);">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
+      Share My Link on WhatsApp
+    </button>
+  </div>
+
+  <!-- LEADS PAGE -->
+  <div class="page" id="pageLeads">
+    <div class="sec-header">
+      <div class="sec-title">📋 My Registrations</div>
+      <button class="refresh-btn" onclick="loadReferrals()">⟳ Refresh</button>
+    </div>
+    <div class="college-filter" id="collegeFilter">
+      <button class="cf-btn active" data-college="ALL" onclick="setCollegeFilter(this)">All</button>
+    </div>
+    <div class="reg-list" id="regList">
+      <div class="state-msg">⏳ Loading...</div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD PAGE -->
+  <div class="page" id="pageLeaderboard">
+    <div class="sec-header" style="margin-bottom:1rem;">
+      <div class="sec-title">🏅 Leaderboard</div>
+      <button class="refresh-btn" onclick="loadLeaderboard()">⟳ Refresh</button>
+    </div>
+    <div id="lbList"><div class="state-msg">⏳ Loading...</div></div>
+  </div>
+
+  <!-- TEMPLATES PAGE -->
+  <div class="page" id="pageTemplates">
+    <div class="tmpl-header">
+      <div class="sec-title">💬 Message Templates</div>
+      <button class="add-tmpl-btn" onclick="openTmplModal()">+ Add</button>
+    </div>
+    <div id="tmplList"></div>
+  </div>
+
+</div>
+
+<!-- ── BOTTOM NAV ── -->
+<nav class="bottom-nav" id="bottomNav">
+  <div class="bn-inner">
+    <button class="bn-item active" id="bn-home" onclick="switchPage('Home')">
+      <span class="bn-icon">🏠</span><span class="bn-label">Home</span>
+    </button>
+    <button class="bn-item" id="bn-leads" onclick="switchPage('Leads')">
+      <span class="bn-icon">📋</span><span class="bn-label">My Leads</span>
+    </button>
+    <button class="bn-item" id="bn-leaderboard" onclick="switchPage('Leaderboard')">
+      <span class="bn-icon">🏅</span><span class="bn-label">Leaderboard</span>
+    </button>
+    <button class="bn-item" id="bn-templates" onclick="switchPage('Templates')">
+      <span class="bn-icon">💬</span><span class="bn-label">Templates</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── TEMPLATE MODAL ── -->
+<div class="modal-overlay" id="tmplModal">
+  <div class="modal">
+    <div class="modal-title">✏️ New Message Template</div>
+    <div class="modal-field">
+      <label class="modal-lbl">Template Name</label>
+      <input type="text" class="modal-input" id="tmplName" placeholder="e.g. Welcome Message"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-lbl">Message Body <span style="color:#94a3b8;font-size:.7rem;font-weight:400;">(use {name} and {link} as placeholders)</span></label>
+      <textarea class="modal-input" id="tmplBody" rows="5" placeholder="Hi {name}! 👋&#10;Array Class ke liye register karo: {link}"></textarea>
+    </div>
+    <button class="modal-save" onclick="saveTmpl()">Save Template</button>
+    <button class="modal-cancel" onclick="closeTmplModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEET_URL  = 'https://script.google.com/macros/s/AKfycbz_YEj9P3mLpN3WncLC7Ancf2J8DV5FnEYxJO47t1EPpC--kdpm5h0VxWixS166lKxY/exec';
+const PAGE_URL   = 'https://collegebuddy7.github.io/array-class/';
+const LS_SESSION = 'cb_mentor_session';
+
+let currentAgent  = null;
+let allReferrals  = [];
+let activeCollege = 'ALL';
+
+// ── BOOT ──────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('a-mobile').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('a-pass').focus(); });
+  document.getElementById('a-pass').addEventListener('keydown',  e=>{ if(e.key==='Enter') agentLogin(); });
+
+  try{
+    const saved = localStorage.getItem(LS_SESSION);
+    if(saved){
+      const s = JSON.parse(saved);
+      if(s && s.name && s.refCode){ currentAgent = s; showDash(); return; }
+    }
+  }catch(e){}
+});
+
+// ── LOGIN ──────────────────────────────────────────────
+async function agentLogin(){
+  const mobile = document.getElementById('a-mobile').value.trim();
+  const pass   = document.getElementById('a-pass').value.trim();
+  const errEl  = document.getElementById('loginErr');
+  errEl.style.display = 'none';
+
+  if(!mobile || !pass){
+    errEl.textContent = 'Mobile aur password dono chahiye.';
+    errEl.style.display = 'block'; return;
+  }
+
+  const btn=document.getElementById('loginBtn'), sp=document.getElementById('loginSpin'), bt=document.getElementById('loginBtxt');
+  btn.disabled=true; sp.style.display='block'; bt.style.display='none';
+
+  try{
+    const url  = SHEET_URL+'?action=agentLogin&mobile='+encodeURIComponent(mobile)+'&password='+encodeURIComponent(pass);
+    const res  = await fetch(url);
+    const data = await res.json();
+
+    if(data.status === 'ok'){
+      currentAgent = { name: data.name, refCode: data.refCode };
+      localStorage.setItem(LS_SESSION, JSON.stringify(currentAgent));
+      showDash();
+    } else {
+      errEl.textContent = data.message || 'Wrong mobile or password.';
+      errEl.style.display = 'block';
+    }
+  } catch(err){
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.style.display = 'block';
+  }
+  btn.disabled=false; sp.style.display='none'; bt.style.display='inline';
+}
+
+// ── SHOW DASHBOARD ──────────────────────────────────────
+function showDash(){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display   = 'block';
+  document.getElementById('bottomNav').style.display   = 'flex';
+  document.getElementById('navBadge').textContent      = currentAgent.name.split(' ')[0];
+  document.getElementById('dashName').textContent      = currentAgent.name;
+  document.getElementById('dashCode').textContent      = currentAgent.refCode;
+  document.getElementById('agentRefLink').value        = PAGE_URL + '?ref=' + encodeURIComponent(currentAgent.refCode);
+
+  loadReferrals();
+  loadLeaderboard();
+  renderTemplates();
+}
+
+// ── PAGE SWITCHING ──────────────────────────────────────
+function switchPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page'+name).classList.add('active');
+  document.getElementById('bn-'+name.toLowerCase()).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── LOAD REFERRALS ──────────────────────────────────────
+async function loadReferrals(){
+  const listEl = document.getElementById('regList');
+  listEl.innerHTML = '<div class="state-msg">⏳ Loading...</div>';
+  document.getElementById('statTotal').textContent  = '…';
+  document.getElementById('statLatest').textContent = '…';
+
+  try{
+    const url  = SHEET_URL + '?action=getReferrals&agentCode=' + encodeURIComponent(currentAgent.refCode);
+    const res  = await fetch(url);
+    const data = await res.json();
+    if(data.status !== 'ok') throw new Error();
+
+    allReferrals = data.data || [];
+    document.getElementById('statTotal').textContent  = allReferrals.length;
+    document.getElementById('statLatest').textContent = allReferrals.length > 0
+      ? allReferrals[allReferrals.length-1].name.split(' ')[0] : '—';
+
+    buildCollegeFilter(allReferrals);
+    renderReferrals();
+  } catch(e){
+    listEl.innerHTML = '<div class="empty-box"><div style="font-size:1.5rem;">⚠️</div><br>Data load nahi hua. Refresh try karein.</div>';
+    document.getElementById('statTotal').textContent  = '—';
+    document.getElementById('statLatest').textContent = '—';
+  }
+}
+
+// ── BUILD DYNAMIC COLLEGE FILTER ───────────────────────
+function buildCollegeFilter(items){
+  const seen = new Set();
+  const colleges = [];
+  items.forEach(r => {
+    if(r.college && !seen.has(r.college)){
+      seen.add(r.college);
+      // Short label: take first comma-separated part, cap at 12 chars
+      const label = r.college.split(',')[0].trim();
+      colleges.push({ label: label.length > 14 ? label.substring(0,13)+'…' : label, value: r.college });
+    }
+  });
+
+  const container = document.getElementById('collegeFilter');
+  container.innerHTML = '<button class="cf-btn active" data-college="ALL" onclick="setCollegeFilter(this)">All ('+ items.length +')</button>';
+  colleges.forEach(c => {
+    const count = items.filter(r => r.college === c.value).length;
+    const btn = document.createElement('button');
+    btn.className = 'cf-btn';
+    btn.dataset.college = c.value;
+    btn.textContent = c.label + ' (' + count + ')';
+    btn.onclick = function(){ setCollegeFilter(this); };
+    container.appendChild(btn);
+  });
+  // Reset active filter to ALL when re-loading
+  activeCollege = 'ALL';
+}
+
+// ── COLLEGE FILTER ──────────────────────────────────────
+function setCollegeFilter(btn){
+  document.querySelectorAll('.cf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCollege = btn.dataset.college;
+  renderReferrals();
+}
+
+// ── RENDER REFERRALS ────────────────────────────────────
+function renderReferrals(){
+  const listEl = document.getElementById('regList');
+  let items = [...allReferrals].reverse();
+  if(activeCollege !== 'ALL') items = items.filter(r => r.college === activeCollege);
+
+  if(items.length === 0){
+    listEl.innerHTML = '<div class="empty-box"><div style="font-size:1.8rem;margin-bottom:.4rem;">📭</div>' +
+      (activeCollege !== 'ALL' ? 'Is college se koi registration nahi.' : 'Abhi koi registration nahi hua aapke link se.') +
+      '</div>';
+    return;
+  }
+
+  listEl.innerHTML = '';
+  items.forEach((r, i) => {
+    const d = document.createElement('div');
+    d.className = 'reg-item';
+    d.style.animationDelay = (i * .03) + 's';
+    const ts     = formatTimestamp(r.timestamp || '');
+    const mobile = r.mobile || '';
+
+    d.innerHTML = `
+      <div class="reg-top">
+        <div class="reg-num">${items.length - i}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="reg-name">${esc(r.name)}</div>
+          <div class="reg-detail">${esc(r.college || '—')}</div>
+        </div>
+        <div class="reg-time">${ts}</div>
+      </div>
+      <div class="reg-actions">
+        <button class="act-btn act-wa" onclick="openWhatsApp('${esc(mobile)}','${esc(r.name)}')">
+          <span>💬</span> WhatsApp
+        </button>
+        <button class="act-btn act-call" onclick="callNumber('${esc(mobile)}')">
+          <span>📞</span> Call
+        </button>
+      </div>`;
+    listEl.appendChild(d);
+  });
+}
+
+// ── LOAD LEADERBOARD ────────────────────────────────────
+async function loadLeaderboard(){
+  const lb = document.getElementById('lbList');
+  lb.innerHTML = '<div class="state-msg">⏳ Loading leaderboard...</div>';
+
+  try{
+    const res  = await fetch(SHEET_URL + '?action=getLeaderboard');
+    const data = await res.json();
+    if(data.status !== 'ok') throw new Error();
+
+    const items = data.data || [];
+    // Set platform total from leaderboard sum
+    const total = items.reduce((s,x) => s+(x.count||0), 0);
+    document.getElementById('platformTotal').textContent = total;
+
+    if(items.length === 0){ lb.innerHTML='<div class="empty-box">No data yet.</div>'; return; }
+
+    lb.innerHTML = '';
+    items.forEach((item, i) => {
+      const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'rn';
+      const isYou     = item.refCode === currentAgent.refCode;
+      const d = document.createElement('div');
+      d.className = 'lb-item' + (isYou?' lb-you':'');
+      d.style.animationDelay = (i*.04)+'s';
+      d.innerHTML = `
+        <div class="lb-rank ${rankClass}">${i+1}</div>
+        <div style="flex:1;">
+          <div class="lb-name">${esc(item.name)}${isYou?' <span style="font-size:.6rem;background:var(--green);color:#fff;border-radius:99px;padding:.1rem .4rem;margin-left:.3rem;">You</span>':''}</div>
+          <div class="lb-code">${esc(item.refCode)}</div>
+        </div>
+        <div class="lb-count">
+          <div class="lb-num">${item.count}</div>
+          <div class="lb-sub">referrals</div>
+        </div>`;
+      lb.appendChild(d);
+    });
+  } catch(e){
+    lb.innerHTML = '<div class="empty-box"><div style="font-size:1.5rem;">⚠️</div><br>Leaderboard load nahi hua.</div>';
+  }
+}
+
+// ── TEMPLATES (localStorage) ────────────────────────────
+function getTemplates(){ try{ return JSON.parse(localStorage.getItem('cb_templates')||'[]'); }catch(e){ return []; } }
+function saveTemplates(arr){ localStorage.setItem('cb_templates', JSON.stringify(arr)); }
+
+function renderTemplates(){
+  const list  = document.getElementById('tmplList');
+  const tmpls = getTemplates();
+  if(tmpls.length === 0){
+    list.innerHTML = '<div class="empty-box"><div style="font-size:1.8rem;margin-bottom:.4rem;">📝</div>Koi template nahi hai. "+ Add" se banayein.<br><br><span style="font-size:.72rem;color:#94a3b8;">Tip: {name} aur {link} use karo placeholders ke liye</span></div>';
+    return;
+  }
+  list.innerHTML = '';
+  tmpls.forEach((t, i) => {
+    const d = document.createElement('div');
+    d.className = 'tmpl-card';
+    d.style.animationDelay = (i*.04)+'s';
+    const preview = (t.body||'').substring(0,100) + ((t.body||'').length>100?'…':'');
+    d.innerHTML = `
+      <div class="tmpl-title-row">${esc(t.name)}</div>
+      <div class="tmpl-body-text">${esc(preview)}</div>
+      <div class="tmpl-actions">
+        <button class="tmpl-copy-btn" onclick="copyTmpl(${i})">📋 Copy</button>
+        <button class="tmpl-wa-btn"   onclick="shareTmplWA(${i})">💬 WA</button>
+        <button class="tmpl-del-btn"  onclick="deleteTmpl(${i})">🗑 Delete</button>
+      </div>`;
+    list.appendChild(d);
+  });
+}
+
+function openTmplModal(){
+  document.getElementById('tmplName').value='';
+  document.getElementById('tmplBody').value='';
+  document.getElementById('tmplModal').classList.add('open');
+}
+function closeTmplModal(){ document.getElementById('tmplModal').classList.remove('open'); }
+function saveTmpl(){
+  const name=document.getElementById('tmplName').value.trim();
+  const body=document.getElementById('tmplBody').value.trim();
+  if(!name||!body){ showToast('Name aur message dono chahiye'); return; }
+  const arr=getTemplates(); arr.push({name,body});
+  saveTemplates(arr); renderTemplates(); closeTmplModal();
+  showToast('Template saved ✓');
+}
+function deleteTmpl(i){
+  const arr=getTemplates(); arr.splice(i,1);
+  saveTemplates(arr); renderTemplates();
+  showToast('Template deleted');
+}
+function copyTmpl(i){
+  const arr=getTemplates();
+  const refLink=PAGE_URL+'?ref='+encodeURIComponent(currentAgent.refCode);
+  const body=(arr[i].body||'').replace(/\{link\}/g,refLink).replace(/\{name\}/g,'');
+  navigator.clipboard.writeText(body).then(()=>showToast('Copied! ✓'));
+}
+function shareTmplWA(i){
+  const arr=getTemplates();
+  const refLink=PAGE_URL+'?ref='+encodeURIComponent(currentAgent.refCode);
+  const body=(arr[i].body||'').replace(/\{link\}/g,refLink).replace(/\{name\}/g,'');
+  window.open('https://wa.me/?text='+encodeURIComponent(body),'_blank');
+}
+
+// ── ACTIONS ────────────────────────────────────────────
+function openWhatsApp(mobile, name){
+  if(!mobile){ showToast('Mobile number available nahi hai'); return; }
+  const refLink=PAGE_URL+'?ref='+encodeURIComponent(currentAgent.refCode);
+  const msg=`Hi ${name}! 👋\n\nMaine tumhara naam C Arrays class ke liye register kiya hai.\nAaj sham 7 baje taiyaar rehna! 🕖\n\nLink: ${refLink}`;
+  window.open('https://wa.me/91'+mobile+'?text='+encodeURIComponent(msg),'_blank');
+}
+function callNumber(mobile){
+  if(!mobile){ showToast('Mobile number available nahi hai'); return; }
+  window.location.href='tel:+91'+mobile;
+}
+function shareRefLinkWA(){
+  const link=document.getElementById('agentRefLink').value;
+  const msg=`Yaar, C Programming seekhna hai free mein? 🔥\n\nAaj sham 7 baje LIVE class hai — Arrays in C 📚\nIs link se register karo abhi! 👇\n\n${link}`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+function copyRefLink(){
+  navigator.clipboard.writeText(document.getElementById('agentRefLink').value).then(()=>{
+    const btn=document.getElementById('copyLinkBtn');
+    btn.textContent='✓ Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copy 📋'; btn.classList.remove('copied'); },2000);
+  });
+}
+
+// ── FORMAT TIMESTAMP ────────────────────────────────────
+function formatTimestamp(ts){
+  if(!ts) return '—';
+  try{
+    const d=new Date(ts);
+    if(isNaN(d)) return ts;
+    const day=d.getDate();
+    const mon=d.toLocaleString('en-IN',{month:'short'});
+    const time=d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+    return `${day} ${mon}<br><span style="color:#94a3b8">${time}</span>`;
+  }catch(e){ return ts; }
+}
+
+// ── LOGOUT ──────────────────────────────────────────────
+function logout(){
+  currentAgent=null; allReferrals=[];
+  localStorage.removeItem(LS_SESSION);
+  document.getElementById('appScreen').style.display   ='none';
+  document.getElementById('bottomNav').style.display   ='none';
+  document.getElementById('loginScreen').style.display ='block';
+  document.getElementById('navBadge').textContent      ='Login';
+  document.getElementById('a-mobile').value='';
+  document.getElementById('a-pass').value='';
+  // Reset page state
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pageHome').classList.add('active');
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bn-home').classList.add('active');
+}
+
+// ── TOAST ───────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── ESC HTML ────────────────────────────────────────────
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+</script>
+</body>
+</html>
