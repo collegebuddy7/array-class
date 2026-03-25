@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Agent Dashboard – College Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{ --navy:#1b3a5c; --green:#52a823; --green2:#3d8019; --gold:#f5a623; --bg:#f0f4f8; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Poppins',sans-serif;background:var(--bg);min-height:100vh;}
+
+nav{background:#fff;box-shadow:0 2px 12px rgba(27,58,92,.1);border-bottom:1.5px solid #e8edf3;}
+.nav-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:.7rem;padding:.5rem 1rem;}
+.nav-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;flex:1;}
+.nav-badge{background:var(--navy);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;padding:.22rem .65rem;border-radius:99px;}
+
+/* LOGIN */
+#loginScreen{max-width:420px;margin:2.5rem auto;padding:0 1rem;}
+.login-card{background:#fff;border-radius:20px;box-shadow:0 4px 28px rgba(27,58,92,.1);overflow:hidden;}
+.login-header{background:linear-gradient(135deg,var(--navy),#254e7a);padding:1.5rem;text-align:center;}
+.login-header h2{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:1.35rem;}
+.login-header p{color:rgba(255,255,255,.65);font-size:.78rem;margin-top:.2rem;}
+.lbody{padding:1.4rem;}
+.field{margin-bottom:1rem;}
+.lbl{display:block;font-weight:600;font-size:.82rem;color:#334155;margin-bottom:.3rem;}
+.fi{width:100%;border:2px solid #e2e8f0;border-radius:10px;padding:.63rem .9rem;font-family:'Poppins',sans-serif;font-size:.87rem;color:#1e293b;background:#f8fafc;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(82,168,35,.13);}
+.err-box{background:#fff3f3;border:1.5px solid #fca5a5;border-radius:9px;padding:.55rem .85rem;color:#991b1b;font-size:.78rem;font-weight:600;margin-bottom:.9rem;display:none;}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:12px;padding:.88rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;box-shadow:0 4px 16px rgba(82,168,35,.35);}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;}
+.spin{width:16px;height:16px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* DASHBOARD */
+#dashScreen{display:none;max-width:600px;margin:0 auto;padding:1.2rem 1rem 4rem;}
+
+.agent-header{background:linear-gradient(135deg,var(--navy),#254e7a);border-radius:16px;padding:1.1rem 1.2rem;display:flex;align-items:center;gap:.85rem;margin-bottom:1rem;}
+.agent-avatar{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;}
+.agent-name{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:1.05rem;}
+.agent-code-label{color:rgba(255,255,255,.55);font-size:.7rem;}
+.agent-code-val{color:#a8e063;font-weight:700;font-size:.82rem;}
+.logout-btn{margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:.3rem .65rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.logout-btn:hover{background:rgba(255,255,255,.25);}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;}
+.stat-card{background:#fff;border-radius:14px;padding:.9rem 1rem;box-shadow:0 2px 12px rgba(27,58,92,.07);}
+.stat-lbl{font-size:.68rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+.stat-val{font-family:'Nunito',sans-serif;font-weight:900;font-size:2rem;color:var(--navy);line-height:1.1;margin-top:.1rem;}
+.stat-sub{font-size:.67rem;color:#94a3b8;margin-top:.1rem;}
+
+/* Share link box */
+.link-box{background:#fff;border-radius:14px;padding:.9rem 1rem;box-shadow:0 2px 12px rgba(27,58,92,.07);margin-bottom:1rem;}
+.link-box-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.85rem;margin-bottom:.5rem;}
+.link-row{display:flex;gap:.4rem;}
+.link-input{flex:1;border:2px solid #e2e8f0;border-radius:9px;padding:.48rem .7rem;font-size:.73rem;color:#475569;background:#f8fafc;outline:none;font-family:'Poppins',sans-serif;}
+.copy-lnk{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:.48rem .85rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.copy-lnk.copied{background:var(--green);}
+
+/* Registration list */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem;}
+.sec-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.92rem;}
+.refresh-btn{background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;padding:.28rem .65rem;font-size:.7rem;font-weight:700;color:var(--navy);cursor:pointer;font-family:'Nunito',sans-serif;}
+.refresh-btn:hover{border-color:var(--green);color:var(--green2);}
+
+.reg-list{display:flex;flex-direction:column;gap:.45rem;}
+.reg-item{background:#fff;border-radius:12px;padding:.65rem .9rem;box-shadow:0 1px 8px rgba(27,58,92,.06);display:flex;align-items:center;gap:.65rem;animation:up .3s ease both;}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.reg-num{width:26px;height:26px;background:linear-gradient(135deg,var(--green),var(--green2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:.7rem;color:#fff;flex-shrink:0;}
+.reg-name{font-weight:600;font-size:.82rem;color:var(--navy);}
+.reg-college{font-size:.7rem;color:#94a3b8;margin-top:.05rem;}
+.reg-time{font-size:.65rem;color:#cbd5e1;margin-left:auto;text-align:right;flex-shrink:0;}
+
+.empty-box{background:#fff;border-radius:12px;padding:2rem 1rem;text-align:center;color:#94a3b8;box-shadow:0 1px 8px rgba(27,58,92,.06);}
+.state-msg{text-align:center;padding:1.5rem;color:#94a3b8;font-size:.82rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">🎓 College Buddy · Agent Portal</div>
+    <div class="nav-badge">Dashboard</div>
+  </div>
+</nav>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-header">
+      <div style="font-size:2rem;margin-bottom:.3rem;">🔐</div>
+      <h2>Agent Login</h2>
+      <p>Mobile number aur password se login karein</p>
+    </div>
+    <div class="lbody">
+      <div class="err-box" id="loginErr"></div>
+      <div class="field">
+        <label class="lbl">Mobile Number</label>
+        <input type="tel" id="a-mobile" class="fi" placeholder="10-digit mobile" maxlength="10" inputmode="numeric"/>
+      </div>
+      <div class="field" style="margin-bottom:1.2rem;">
+        <label class="lbl">Password</label>
+        <input type="password" id="a-pass" class="fi" placeholder="Password enter karein"/>
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="agentLogin()">
+        <div class="spin" id="loginSpin"></div>
+        <span id="loginBtxt">Login →</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashScreen">
+
+  <div class="agent-header">
+    <div class="agent-avatar">👤</div>
+    <div>
+      <div class="agent-name" id="dashName">—</div>
+      <div class="agent-code-label">Referral Code: <span class="agent-code-val" id="dashCode">—</span></div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-lbl">Total Referrals</div>
+      <div class="stat-val" id="statTotal">—</div>
+      <div class="stat-sub">via your link</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Latest</div>
+      <div class="stat-val" id="statLatest" style="font-size:1rem;margin-top:.4rem;color:#64748b;">—</div>
+      <div class="stat-sub">most recent signup</div>
+    </div>
+  </div>
+
+  <div class="link-box">
+    <div class="link-box-title">🔗 Aapka Referral Link</div>
+    <div class="link-row">
+      <input type="text" id="agentRefLink" class="link-input" readonly/>
+      <button class="copy-lnk" id="copyLinkBtn" onclick="copyRefLink()">Copy 📋</button>
+    </div>
+  </div>
+
+  <div class="sec-header">
+    <div class="sec-title">📋 Registrations via Your Link</div>
+    <button class="refresh-btn" onclick="loadReferrals()">⟳ Refresh</button>
+  </div>
+  <div class="reg-list" id="regList">
+    <div class="state-msg">⏳ Loading...</div>
+  </div>
+
+</div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz_YEj9P3mLpN3WncLC7Ancf2J8DV5FnEYxJO47t1EPpC--kdpm5h0VxWixS166lKxY/exec';
+const PAGE_URL  = 'https://collegebuddy7.github.io/array-class/';
+
+let currentAgent = null;
+
+document.getElementById('a-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') agentLogin(); });
+
+async function agentLogin(){
+  const mobile = document.getElementById('a-mobile').value.trim();
+  const pass   = document.getElementById('a-pass').value.trim();
+  const errEl  = document.getElementById('loginErr');
+  errEl.style.display='none';
+
+  if(!mobile || !pass){ errEl.textContent='Mobile aur password dono chahiye.'; errEl.style.display='block'; return; }
+
+  const btn=document.getElementById('loginBtn');
+  const sp=document.getElementById('loginSpin');
+  const bt=document.getElementById('loginBtxt');
+  btn.disabled=true; sp.style.display='block'; bt.style.display='none';
+
+  try {
+    const res = await fetch(SHEET_URL + '?action=agentLogin&mobile=' + encodeURIComponent(mobile) + '&password=' + encodeURIComponent(pass));
+
+    // const res  = await fetch(SHEET_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({action:'agentLogin', mobile, password:pass}) });
+    const data = await res.json();
+    if(data.status==='ok'){
+      currentAgent = { name:data.name, refCode:data.refCode };
+      showDash();
+    } else {
+      errEl.textContent = data.message || 'Wrong mobile or password.';
+      errEl.style.display = 'block';
+    }
+  } catch(err){
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.style.display = 'block';
+  }
+  btn.disabled=false; sp.style.display='none'; bt.style.display='inline';
+}
+
+function showDash(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('dashScreen').style.display='block';
+  document.getElementById('dashName').textContent = currentAgent.name;
+  document.getElementById('dashCode').textContent = currentAgent.refCode;
+  document.getElementById('agentRefLink').value = PAGE_URL+'?ref='+encodeURIComponent(currentAgent.refCode);
+  loadReferrals();
+}
+
+async function loadReferrals(){
+  const listEl = document.getElementById('regList');
+  listEl.innerHTML = '<div class="state-msg">⏳ Loading registrations...</div>';
+  document.getElementById('statTotal').textContent = '…';
+  document.getElementById('statLatest').textContent = '…';
+
+  try {
+    const url  = SHEET_URL+'?action=getReferrals&agentCode='+encodeURIComponent(currentAgent.refCode);
+    const res  = await fetch(url);
+    const data = await res.json();
+    if(data.status!=='ok') throw new Error();
+
+    const items = data.data || [];
+    document.getElementById('statTotal').textContent = items.length;
+    document.getElementById('statLatest').textContent = items.length > 0 ? items[items.length-1].name.split(' ')[0] : '—';
+
+    if(items.length===0){
+      listEl.innerHTML='<div class="empty-box"><div style="font-size:1.8rem;margin-bottom:.4rem;">📭</div>Abhi koi registration nahi hua aapke link se.</div>';
+      return;
+    }
+    listEl.innerHTML='';
+    // Show newest first
+    [...items].reverse().forEach((r,i)=>{
+      const d=document.createElement('div');
+      d.className='reg-item';
+      d.style.animationDelay=(i*.035)+'s';
+      d.innerHTML=`<div class="reg-num">${items.length-i}</div>
+        <div style="flex:1">
+          <div class="reg-name">${esc(r.name)}</div>
+          <div class="reg-college">${esc(r.college||'—')}</div>
+        </div>
+        <div class="reg-time">${esc(r.timestamp||'')}</div>`;
+      listEl.appendChild(d);
+    });
+  } catch(e){
+    listEl.innerHTML='<div class="empty-box"><div style="font-size:1.5rem;">⚠️</div>Data load nahi hua. Refresh try karein.</div>';
+  }
+}
+
+function copyRefLink(){
+  navigator.clipboard.writeText(document.getElementById('agentRefLink').value).then(()=>{
+    const btn=document.getElementById('copyLinkBtn');
+    btn.textContent='✓ Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copy 📋'; btn.classList.remove('copied'); },2000);
+  });
+}
+
+function logout(){
+  currentAgent=null;
+  document.getElementById('dashScreen').style.display='none';
+  document.getElementById('loginScreen').style.display='block';
+  document.getElementById('a-mobile').value='';
+  document.getElementById('a-pass').value='';
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>

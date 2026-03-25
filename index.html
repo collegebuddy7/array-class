@@ -14,12 +14,12 @@
   --bg:#f0f4f8;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Poppins',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:4rem;}
+body{font-family:'Poppins',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:5rem;}
 
 /* ── NAV ── */
 nav{background:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(27,58,92,.1);border-bottom:1.5px solid #e8edf3;}
 .nav-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:.7rem;padding:.45rem 1rem;}
-.nav-logo{height:44px;object-fit:contain;flex-shrink:0; padding: 3px;}
+.nav-logo{height:44px;object-fit:contain;flex-shrink:0;padding:3px;}
 .nav-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.95rem;flex:1;}
 .nav-badge{background:var(--gold);color:var(--navy);font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;padding:.22rem .65rem;border-radius:99px;white-space:nowrap;}
 
@@ -31,8 +31,6 @@ nav{background:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba
 .hero h1 em{color:var(--gold);font-style:normal;}
 .hero p{color:rgba(255,255,255,.7);font-size:.83rem;margin-top:.35rem;}
 .hero-time{display:inline-flex;align-items:center;gap:.4rem;background:rgba(245,166,35,.18);border:1px solid rgba(245,166,35,.4);border-radius:8px;padding:.35rem .85rem;color:var(--gold);font-size:.8rem;font-weight:600;margin-top:.75rem;}
-
-/* PROGRESS */
 .pw{background:rgba(255,255,255,.14);border-radius:99px;height:5px;margin:.85rem auto 0;max-width:280px;}
 #pg{height:5px;border-radius:99px;background:linear-gradient(90deg,var(--gold),#ffd95e);width:0%;transition:width .3s ease;}
 #pg-t{color:rgba(255,255,255,.55);font-size:.7rem;margin-top:.28rem;}
@@ -47,68 +45,86 @@ nav{background:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba
 .ref-bar{display:none;align-items:center;gap:.5rem;background:linear-gradient(90deg,#f0fae8,#e8f4ff);border:1.5px solid #b6dfa0;border-radius:11px;padding:.65rem .9rem;margin-bottom:1.1rem;font-size:.82rem;color:var(--navy);}
 .ref-bar strong{color:var(--green2);}
 
+/* DUPLICATE ALERT */
+.dup-alert{display:none;align-items:center;gap:.5rem;background:#fff3f3;border:2px solid #fca5a5;border-radius:11px;padding:.65rem .9rem;margin-bottom:1rem;font-size:.82rem;color:#991b1b;font-weight:600;}
+
 /* FIELD */
 .field{margin-bottom:1rem;}
 .lbl{display:block;font-weight:600;font-size:.82rem;color:#334155;margin-bottom:.3rem;}
 .req{color:#ef4444;}
-
-/* INPUTS */
 .fi{width:100%;border:2px solid #e2e8f0;border-radius:10px;padding:.63rem .9rem;font-family:'Poppins',sans-serif;font-size:.87rem;color:#1e293b;background:#f8fafc;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;}
 .fi:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(82,168,35,.13);background:#fff;}
 .fi.err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.09);}
 select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%231b3a5c' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2.2rem;cursor:pointer;}
 .et{font-size:.72rem;color:#ef4444;margin-top:.25rem;display:none;}
-
-/* RADIO */
 .rg{display:flex;flex-wrap:wrap;gap:.4rem;}
 .rp{display:flex;align-items:center;gap:.38rem;padding:.42rem .82rem;border:2px solid #e2e8f0;border-radius:99px;cursor:pointer;font-size:.81rem;background:#f8fafc;transition:all .15s;user-select:none;}
 .rp:hover{border-color:var(--green);background:#f0fae8;}
 .rp input{accent-color:var(--green);width:14px;height:14px;}
 .rp.sel{border-color:var(--green);background:#f0fae8;font-weight:700;color:var(--navy);}
-
-/* SUBMIT BTN */
 .sub-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:12px;padding:.95rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:1.08rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 4px 16px rgba(82,168,35,.38);transition:transform .15s,box-shadow .15s;}
 .sub-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(82,168,35,.48);}
 .sub-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 .spin{width:18px;height:18px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none;}
 @keyframes sp{to{transform:rotate(360deg)}}
+hr.dv{border:none;border-top:2px solid #f1f5f9;}
 
 /* ── SUCCESS SCREEN ── */
-.success-screen{display:none;max-width:600px;margin:1.5rem auto 0;padding:0 1rem;}
+.success-screen{display:none;max-width:600px;margin:1rem auto 0;padding:0 1rem 1rem;}
 .success-card{background:#fff;border-radius:20px;box-shadow:0 4px 28px rgba(27,58,92,.1);overflow:hidden;animation:up .5s ease both;}
 
-/* Ref Code Box */
-.ref-code-box{background:linear-gradient(135deg,var(--navy),#254e7a);border-radius:14px;padding:1.25rem;text-align:center;margin:1.1rem 0;}
-.ref-code-label{color:rgba(255,255,255,.65);font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.35rem;}
-.ref-code-value{font-family:'Nunito',sans-serif;font-weight:900;font-size:2rem;color:#fff;letter-spacing:.08em;line-height:1;}
-.ref-code-sub{color:rgba(255,255,255,.5);font-size:.72rem;margin-top:.3rem;}
+/* Ref Code Box – compact */
+.ref-code-box{background:linear-gradient(135deg,var(--navy),#254e7a);border-radius:14px;padding:.9rem 1rem;display:flex;align-items:center;gap:1rem;margin-bottom:.85rem;}
+.ref-code-icon{font-size:1.6rem;flex-shrink:0;}
+.ref-code-label{color:rgba(255,255,255,.6);font-size:.68rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.ref-code-value{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.6rem;color:#fff;letter-spacing:.06em;line-height:1.1;}
+.ref-code-sub{color:rgba(255,255,255,.45);font-size:.68rem;}
 
-/* Share Cards */
-.share-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;margin-bottom:.75rem;}
-.friend-cards{display:flex;flex-direction:column;gap:.65rem;}
-.friend-card{display:flex;align-items:center;gap:.75rem;background:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:.7rem .9rem;transition:border-color .2s;}
-.friend-card.shared{border-color:var(--green);background:#f0fae8;}
-.friend-num{width:30px;height:30px;background:var(--bg);border:2px solid #e2e8f0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:.85rem;color:#94a3b8;flex-shrink:0;transition:all .2s;}
-.friend-card.shared .friend-num{background:var(--green);border-color:var(--green);color:#fff;}
-.friend-label{flex:1;font-size:.82rem;color:#64748b;}
-.friend-card.shared .friend-label{color:var(--green2);font-weight:600;}
-.wa-share-btn{display:flex;align-items:center;gap:.35rem;background:#25d366;color:#fff;border:none;border-radius:8px;padding:.38rem .75rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.75rem;cursor:pointer;transition:transform .12s,opacity .12s;white-space:nowrap;}
-.wa-share-btn:hover{transform:scale(1.04);}
-.wa-share-btn.done{background:#94a3b8;cursor:default;transform:none;}
+/* Compact WA bubble */
+.wa-bubble-wrap{background:#e5f8e0;border-radius:12px;padding:.6rem .7rem .8rem;position:relative;margin-bottom:.6rem;}
+.wa-bubble-header{display:flex;align-items:center;gap:.4rem;padding-bottom:.45rem;border-bottom:1px solid rgba(0,0,0,.07);margin-bottom:.55rem;}
+.wa-bubble-msg{background:#dcf8c6;border-radius:10px 2px 10px 10px;padding:.6rem .75rem;position:relative;font-size:.8rem;color:#111;line-height:1.6;white-space:pre-wrap;word-break:break-word;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.wa-tail{position:absolute;top:0;right:-6px;width:0;height:0;border-left:7px solid #dcf8c6;border-bottom:7px solid transparent;}
+.wa-tick{display:flex;align-items:center;justify-content:flex-end;gap:.2rem;margin-top:.3rem;}
 
-/* Progress bar for friends */
-.friends-progress{margin-top:.9rem;}
-.fp-label{font-size:.75rem;color:#64748b;margin-bottom:.3rem;display:flex;justify-content:space-between;}
-.fp-bar{background:#e2e8f0;border-radius:99px;height:7px;}
-.fp-fill{height:7px;border-radius:99px;background:linear-gradient(90deg,var(--green),#7dd44a);width:0%;transition:width .4s ease;}
+/* ── STICKY FLOATING WA BUTTON ── */
+#floatingWaBar{
+  display:none;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:999;
+  padding:.75rem 1rem;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(10px);
+  box-shadow:0 -4px 20px rgba(0,0,0,.12);
+  border-top:1.5px solid #e8edf3;
+}
+.float-inner{max-width:600px;margin:0 auto;display:flex;gap:.6rem;align-items:center;}
+#floatingShareBtn{
+  flex:1;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#fff;border:none;border-radius:12px;
+  padding:.8rem .5rem;
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
+  box-shadow:0 4px 16px rgba(37,211,102,.4);
+  transition:transform .15s;
+}
+#floatingShareBtn:hover{transform:translateY(-1px);}
+#floatingShareBtn.done{background:#94a3b8;box-shadow:none;cursor:default;transform:none;}
+#floatingCopyBtn{
+  background:var(--navy);color:#fff;border:none;border-radius:12px;
+  padding:.8rem .85rem;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;
+  cursor:pointer;white-space:nowrap;
+  transition:background .15s;
+}
+#floatingCopyBtn:hover{background:var(--green2);}
+#floatingCopyBtn.copied{background:var(--green);}
 
-/* Copy message box */
-.msg-box{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:11px;padding:.9rem 1rem;font-size:.82rem;color:#374151;line-height:1.7;position:relative;margin-bottom:.85rem;}
-.copy-btn{position:absolute;top:.6rem;right:.6rem;background:var(--navy);color:#fff;border:none;border-radius:7px;padding:.28rem .65rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:background .15s;}
-.copy-btn:hover{background:var(--green2);}
-.copy-btn.copied{background:var(--green);}
-
-hr.dv{border:none;border-top:2px solid #f1f5f9;}
+/* Join group card */
+.join-card{background:linear-gradient(135deg,#f0fae8,#e8f4ff);border:2px solid #b6dfa0;border-radius:14px;padding:.9rem 1rem;text-align:center;margin-top:.7rem;display:none;animation:up .4s ease both;}
 </style>
 </head>
 <body>
@@ -138,33 +154,33 @@ hr.dv{border:none;border-top:2px solid #f1f5f9;}
   <div class="card">
     <div class="cs">
 
-      <!-- Referral Banner -->
       <div class="ref-bar" id="refBar">
         👋 Aapko <strong id="refName"></strong> ne refer kiya hai!
       </div>
 
-      <!-- Name -->
+      <!-- Duplicate Alert -->
+      <div class="dup-alert" id="dupAlert">
+        ⚠️ Yeh mobile number ya email already registered hai! Please check karein.
+      </div>
+
       <div class="field">
         <label class="lbl">Full Name <span class="req">*</span></label>
         <input type="text" id="f-name" class="fi" placeholder="Apna pura naam likhein" autocomplete="name"/>
         <p class="et" id="e-name">Naam required hai.</p>
       </div>
 
-      <!-- Email -->
       <div class="field">
         <label class="lbl">Email Address <span class="req">*</span></label>
         <input type="email" id="f-email" class="fi" placeholder="example@gmail.com" inputmode="email" autocomplete="email"/>
         <p class="et" id="e-email">Valid email enter karein.</p>
       </div>
 
-      <!-- Mobile -->
       <div class="field">
         <label class="lbl">Mobile Number <span class="req">*</span></label>
         <input type="tel" id="f-mobile" class="fi" placeholder="10-digit number" maxlength="10" inputmode="numeric"/>
         <p class="et" id="e-mobile">Valid 10-digit number enter karein.</p>
       </div>
 
-      <!-- College -->
       <div class="field">
         <label class="lbl">College <span class="req">*</span></label>
         <select id="f-college" class="fi">
@@ -173,7 +189,6 @@ hr.dv{border:none;border-top:2px solid #f1f5f9;}
         <p class="et" id="e-college">College select karein.</p>
       </div>
 
-      <!-- Laptop -->
       <div class="field">
         <label class="lbl">Aapke paas Laptop/Computer hai? <span class="req">*</span></label>
         <div class="rg">
@@ -183,14 +198,12 @@ hr.dv{border:none;border-top:2px solid #f1f5f9;}
         <p class="et" id="e-laptop">Ek option select karein.</p>
       </div>
 
-      <!-- Feedback -->
       <div class="field" style="margin-bottom:1.4rem;">
         <label class="lbl">Suggestion / Feedback <span class="req">*</span></label>
         <textarea id="f-feedback" class="fi" rows="3" placeholder="Koi bhi sawaal, suggestion ya expectation likhein..." style="resize:none;"></textarea>
         <p class="et" id="e-feedback">Feedback required hai.</p>
       </div>
 
-      <!-- Submit -->
       <button class="sub-btn" id="subBtn" onclick="submitForm()">
         <div class="spin" id="spin"></div>
         <span id="btxt">Submit Registration 🚀</span>
@@ -206,88 +219,76 @@ hr.dv{border:none;border-top:2px solid #f1f5f9;}
   <div class="success-card">
 
     <!-- Green header -->
-    <div style="background:linear-gradient(135deg,var(--green),var(--green2));padding:1.4rem 1.5rem;text-align:center;">
-      <div style="font-size:2.4rem;margin-bottom:.3rem;">🎉</div>
-      <h2 style="font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:1.35rem;">Registration Ho Gaya!</h2>
-      <p style="color:rgba(255,255,255,.82);font-size:.82rem;margin-top:.2rem;">Aaj sham 7 baje taiyaar rehna 🕖</p>
+    <div style="background:linear-gradient(135deg,var(--green),var(--green2));padding:1.1rem 1.5rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.2rem;">🎉</div>
+      <h2 style="font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:1.25rem;">Registration Ho Gaya!</h2>
+      <p style="color:rgba(255,255,255,.82);font-size:.78rem;margin-top:.15rem;">Aaj sham 7 baje taiyaar rehna 🕖</p>
     </div>
 
-    <div class="cs">
+    <div class="cs" style="padding:1rem 1.1rem;">
 
-      <!-- Ref code -->
+      <!-- Compact Ref code -->
       <div class="ref-code-box">
-        <div class="ref-code-label">🔗 Aapka Referral Code</div>
-        <div class="ref-code-value" id="myRefCode">—</div>
-        <div class="ref-code-sub">Yeh code aapka unique share link hai</div>
+        <div class="ref-code-icon">🔗</div>
+        <div>
+          <div class="ref-code-label">Aapka Referral Code</div>
+          <div class="ref-code-value" id="myRefCode">—</div>
+          <div class="ref-code-sub">Yeh code share karke dosto ko invite karo</div>
+        </div>
       </div>
 
-      <hr class="dv" style="margin:1.1rem 0;"/>
+      <!-- Instruction row -->
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.9rem;margin-bottom:.3rem;">📲 Doston ko Share Karo — Group Unlock Hoga!</div>
+      <p style="font-size:.76rem;color:#64748b;line-height:1.55;margin-bottom:.8rem;">Neeche wala message apne dosto ko bhejo. Share karo aur <strong style="color:var(--green2);">WhatsApp Group</strong> join karo! 👇</p>
 
-      <!-- Instruction -->
-      <div style="font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;margin-bottom:.4rem;">📲 5 Doston ko Share Karo!</div>
-      <p style="font-size:.8rem;color:#64748b;line-height:1.6;margin-bottom:1.1rem;">
-        Neeche wala message copy karke ya <strong>Share on WhatsApp</strong> button se apne 5 dosto ko bhejo. Ek baar share karo — aur <strong style="color:var(--green2);">WhatsApp Group ka link</strong> unlock ho jayega! 👇
-      </p>
-
-      <!-- ── WHATSAPP BUBBLE ── -->
-      <div style="background:#e5f8e0;border-radius:14px;padding:.75rem .75rem 1.1rem;position:relative;margin-bottom:.5rem;">
-
-        <!-- Chat header mock -->
-        <div style="display:flex;align-items:center;gap:.5rem;padding-bottom:.6rem;border-bottom:1px solid rgba(0,0,0,.07);margin-bottom:.75rem;">
-          <div style="width:32px;height:32px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;">👥</div>
+      <!-- Compact WA Bubble -->
+      <div class="wa-bubble-wrap">
+        <div class="wa-bubble-header">
+          <div style="width:26px;height:26px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;">👥</div>
           <div>
-            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;color:#1a1a1a;">College Buddy Friends</div>
-            <div style="font-size:.68rem;color:#6b7280;">Aapka personal share message</div>
+            <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:.76rem;color:#1a1a1a;">College Buddy Friends</div>
+            <div style="font-size:.62rem;color:#6b7280;">Aapka share message</div>
+          </div>
+          <div style="margin-left:auto;">
+            <button id="copyMsgBtn" onclick="copyMessage()" style="background:rgba(0,0,0,.08);border:none;border-radius:6px;padding:.22rem .6rem;font-size:.67rem;font-weight:700;color:#374151;cursor:pointer;font-family:'Nunito',sans-serif;">📋 Copy</button>
           </div>
         </div>
-
-        <!-- Bubble -->
-        <div style="display:flex;justify-content:flex-end;">
-          <div style="background:#dcf8c6;border-radius:14px 2px 14px 14px;padding:.75rem .9rem;max-width:88%;box-shadow:0 1px 3px rgba(0,0,0,.1);position:relative;">
-
-            <!-- Tail -->
-            <div style="position:absolute;top:0;right:-7px;width:0;height:0;border-left:8px solid #dcf8c6;border-bottom:8px solid transparent;"></div>
-
-            <!-- Message text -->
-            <div id="waMessageBubble" style="font-size:.84rem;color:#111;line-height:1.7;white-space:pre-wrap;word-break:break-word;"></div>
-
-            <!-- Time tick -->
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:.25rem;margin-top:.4rem;">
-              <span style="font-size:.65rem;color:#6b7280;" id="msgTime"></span>
-              <svg width="14" height="10" viewBox="0 0 16 11" fill="none"><path d="M1 5.5L5 9.5L15 1.5" stroke="#4FC3F7" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5.5L9 9.5L15 3" stroke="#4FC3F7" stroke-width="1.8" stroke-linecap="round"/></svg>
-            </div>
+        <div class="wa-bubble-msg">
+          <div class="wa-tail"></div>
+          <div id="waMessageBubble"></div>
+          <div class="wa-tick">
+            <span style="font-size:.6rem;color:#6b7280;" id="msgTime"></span>
+            <svg width="13" height="9" viewBox="0 0 16 11" fill="none"><path d="M1 5.5L5 9.5L15 1.5" stroke="#4FC3F7" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5.5L9 9.5L15 3" stroke="#4FC3F7" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
-        </div>
-
-        <!-- Copy button inside bubble area -->
-        <div style="display:flex;justify-content:flex-end;margin-top:.5rem;">
-          <button id="copyMsgBtn" onclick="copyMessage()" style="background:rgba(0,0,0,.08);border:none;border-radius:7px;padding:.3rem .75rem;font-size:.72rem;font-weight:700;color:#374151;cursor:pointer;font-family:'Nunito',sans-serif;transition:background .15s;">📋 Copy Message</button>
         </div>
       </div>
 
-      <!-- ── SHARE BUTTON ── -->
-      <button id="mainShareBtn" onclick="shareOnWhatsApp()" style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:12px;padding:.9rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.55rem;box-shadow:0 4px 16px rgba(37,211,102,.38);transition:transform .15s;margin-top:.75rem;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
-        Share on WhatsApp
-      </button>
-
-      <!-- ── JOIN GROUP (hidden until shared) ── -->
-      <div id="joinGroupSection" style="display:none;margin-top:1.1rem;animation:up .4s ease both;">
-        <div style="background:linear-gradient(135deg,#f0fae8,#e8f4ff);border:2px solid #b6dfa0;border-radius:14px;padding:1.1rem;text-align:center;">
-          <div style="font-size:1.8rem;margin-bottom:.35rem;">🎊</div>
-          <div style="font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:1rem;margin-bottom:.3rem;">Ab Group Join Karo!</div>
-          <p style="font-size:.79rem;color:#64748b;line-height:1.55;margin-bottom:.85rem;">Share ho gaya! Ab WhatsApp Group join karo aur class ki saari updates pao 🔔</p>
-          <a href="https://chat.whatsapp.com/JTVuAhJ56Ai5YefRpu77qQ" target="_blank"
-             style="display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;text-decoration:none;border-radius:11px;padding:.75rem 1.5rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;box-shadow:0 4px 14px rgba(37,211,102,.38);">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
-            Join WhatsApp Group
-          </a>
-        </div>
+      <!-- Join Group (revealed after share) -->
+      <div class="join-card" id="joinGroupSection">
+        <div style="font-size:1.5rem;margin-bottom:.3rem;">🎊</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.95rem;margin-bottom:.25rem;">Ab Group Join Karo!</div>
+        <p style="font-size:.75rem;color:#64748b;margin-bottom:.7rem;">Share ho gaya! Ab WhatsApp Group join karo 🔔</p>
+        <a href="https://chat.whatsapp.com/JTVuAhJ56Ai5YefRpu77qQ" target="_blank"
+           style="display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;text-decoration:none;border-radius:10px;padding:.65rem 1.3rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;box-shadow:0 4px 14px rgba(37,211,102,.38);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
+          Join WhatsApp Group
+        </a>
       </div>
 
     </div>
   </div>
-  <p style="text-align:center;font-size:.68rem;color:#94a3b8;margin-top:.75rem;padding-bottom:1rem;">© 2025 College Buddy</p>
+  <p style="text-align:center;font-size:.66rem;color:#94a3b8;margin-top:.65rem;padding-bottom:.5rem;">© 2025 College Buddy</p>
+</div>
+
+<!-- ── STICKY FLOATING WA BAR (shows after registration) ── -->
+<div id="floatingWaBar">
+  <div class="float-inner">
+    <button id="floatingShareBtn" onclick="shareOnWhatsApp()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/></svg>
+      Share on WhatsApp 📲
+    </button>
+    <button id="floatingCopyBtn" onclick="copyMessageFloat()">📋 Copy</button>
+  </div>
 </div>
 
 <script>
@@ -297,233 +298,178 @@ const PAGE_URL  = 'https://collegebuddy7.github.io/array-class/';
 
 // ── COLLEGE LIST ─────────────────────────────────────
 const COLLEGES = [
-  "A.B.S. College, Lalganj",
-  "B.M.D. College, Dayalpur",
-  "CN College, Sahebganj",
-  "Dr. R.M.L.S. College, Muzaffarpur",
-  "J.L. College, Hajipur",
-  "J.L.N.M. College, Ghorasahan",
-  "K.C.T.C. College, Raxaul",
-  "L.N.T. College, Muzaffarpur",
-  "L.N. College, Bhagwanpur",
-  "L.N.D. College, Motihari",
-  "L.S. College, Muzaffarpur",
-  "M.S.M. Samata College, Jandah",
-  "M.S.S.G. College, Areraj",
-  "M.D.D.M. College, Muzaffarpur",
-  "M.J.K. College, Bettiah",
-  "M.P.S. Sc. College, Muzaffarpur",
-  "M.S. College, Motihari",
-  "Nitishwar College, Muzaffarpur",
-  "Indu Devi College",
-  "R.D.S. College, Muzaffarpur",
-  "R.L.S.Y. College, Bettiah",
-  "R.N. College, Hajipur",
-  "R.S.S.M. College, Sitamarhi",
-  "R.S.S. Sc. College, Sitamarhi",
-  "Rameshwar Mahavidyalaya, Muzaffarpur",
-  "S.R.A.P. College, Barachakia",
-  "S.L.K. College, Sitamarhi",
-  "S.N.S. College, Motihari",
-  "S.R.K.G. College, Sitamarhi",
-  "Vaishali Institute of Business and Rural Management, Muzaffarpur",
-  "Other",
+  "A.B.S. College, Lalganj","B.M.D. College, Dayalpur","CN College, Sahebganj",
+  "Dr. R.M.L.S. College, Muzaffarpur","J.L. College, Hajipur","J.L.N.M. College, Ghorasahan",
+  "K.C.T.C. College, Raxaul","L.N.T. College, Muzaffarpur","L.N. College, Bhagwanpur",
+  "L.N.D. College, Motihari","L.S. College, Muzaffarpur","M.S.M. Samata College, Jandah",
+  "M.S.S.G. College, Areraj","M.D.D.M. College, Muzaffarpur","M.J.K. College, Bettiah",
+  "M.P.S. Sc. College, Muzaffarpur","M.S. College, Motihari","Nitishwar College, Muzaffarpur",
+  "Indu Devi College","R.D.S. College, Muzaffarpur","R.L.S.Y. College, Bettiah",
+  "R.N. College, Hajipur","R.S.S.M. College, Sitamarhi","R.S.S. Sc. College, Sitamarhi",
+  "Rameshwar Mahavidyalaya, Muzaffarpur","S.R.A.P. College, Barachakia","S.L.K. College, Sitamarhi",
+  "S.N.S. College, Motihari","S.R.K.G. College, Sitamarhi",
+  "Vaishali Institute of Business and Rural Management, Muzaffarpur","Other"
 ];
-
-// ── POPULATE COLLEGE DROPDOWN ────────────────────────
 (function(){
   const sel = document.getElementById('f-college');
-  COLLEGES.forEach((c, i) => {
-    const o = document.createElement('option');
-    o.value = c;
-    o.textContent = (i + 1) + '. ' + c;
-    sel.appendChild(o);
-  });
+  COLLEGES.forEach((c,i)=>{ const o=document.createElement('option'); o.value=c; o.textContent=(i+1)+'. '+c; sel.appendChild(o); });
 })();
 
 // ── READ ?ref= FROM URL ──────────────────────────────
 (function(){
   const ref = new URLSearchParams(window.location.search).get('ref');
-  if (ref) {
-    const name = decodeURIComponent(ref);
-    document.getElementById('refName').textContent = name;
-    document.getElementById('refBar').style.display = 'flex';
-  }
+  if(ref){ document.getElementById('refName').textContent=decodeURIComponent(ref); document.getElementById('refBar').style.display='flex'; }
 })();
 
 // ── RADIO HIGHLIGHT ──────────────────────────────────
-document.querySelectorAll('.rp input[type=radio]').forEach(inp => {
-  inp.addEventListener('change', function(){
-    document.querySelectorAll(`input[name="${this.name}"]`)
-      .forEach(i => i.closest('.rp').classList.remove('sel'));
+document.querySelectorAll('.rp input[type=radio]').forEach(inp=>{
+  inp.addEventListener('change',function(){
+    document.querySelectorAll(`input[name="${this.name}"]`).forEach(i=>i.closest('.rp').classList.remove('sel'));
     this.closest('.rp').classList.add('sel');
   });
 });
 
 // ── PROGRESS BAR ─────────────────────────────────────
 function updateProgress(){
-  let done = 0;
+  let done=0;
   if(document.getElementById('f-name').value.trim()) done++;
   if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('f-email').value.trim())) done++;
   if(/^\d{10}$/.test(document.getElementById('f-mobile').value.trim())) done++;
   if(document.getElementById('f-college').value) done++;
   if(document.querySelector('input[name="laptop"]:checked')) done++;
   if(document.getElementById('f-feedback').value.trim()) done++;
-  const pct = Math.round(done / 6 * 100);
-  document.getElementById('pg').style.width = pct + '%';
-  document.getElementById('pg-t').textContent = pct < 100 ? pct + '% completed' : '✅ All done!';
+  const pct=Math.round(done/6*100);
+  document.getElementById('pg').style.width=pct+'%';
+  document.getElementById('pg-t').textContent=pct<100?pct+'% completed':'✅ All done!';
 }
-document.addEventListener('input', updateProgress);
-document.addEventListener('change', updateProgress);
+document.addEventListener('input',updateProgress);
+document.addEventListener('change',updateProgress);
 
 // ── GENERATE REF CODE ────────────────────────────────
-// Format: FIRSTNAME + LAST 4 DIGITS OF MOBILE
-// e.g. "Ankit Kumar", 9801907094 → ANKIT7094
-function generateRefCode(fullName, mobile) {
-  const firstName = fullName.trim().split(/\s+/)[0].toUpperCase().replace(/[^A-Z]/g, '');
-  const last4     = mobile.trim().slice(-4);
-  return firstName + last4;
+function generateRefCode(fullName, mobile){
+  const firstName=fullName.trim().split(/\s+/)[0].toUpperCase().replace(/[^A-Z]/g,'');
+  return firstName+mobile.trim().slice(-4);
 }
 
 // ── VALIDATE ─────────────────────────────────────────
 function validate(){
-  let ok = true;
-  const show = (id, v) => document.getElementById(id).style.display = v ? 'block' : 'none';
-  const flag = (id, v) => { const el = document.getElementById(id); if(el){ v ? el.classList.add('err') : el.classList.remove('err'); }};
-
-  const name = document.getElementById('f-name').value.trim();
-  flag('f-name',!name); show('e-name',!name); if(!name) ok=false;
-
-  const email = document.getElementById('f-email').value.trim();
-  const eOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  flag('f-email',!eOk); show('e-email',!eOk); if(!eOk) ok=false;
-
-  const mob = document.getElementById('f-mobile').value.trim();
-  const mOk = /^\d{10}$/.test(mob);
-  flag('f-mobile',!mOk); show('e-mobile',!mOk); if(!mOk) ok=false;
-
-  const col = document.getElementById('f-college').value;
-  flag('f-college',!col); show('e-college',!col); if(!col) ok=false;
-
-  const lap = document.querySelector('input[name="laptop"]:checked');
-  show('e-laptop',!lap); if(!lap) ok=false;
-
-  const fb = document.getElementById('f-feedback').value.trim();
-  flag('f-feedback',!fb); show('e-feedback',!fb); if(!fb) ok=false;
-
+  let ok=true;
+  const show=(id,v)=>document.getElementById(id).style.display=v?'block':'none';
+  const flag=(id,v)=>{const el=document.getElementById(id);if(el){v?el.classList.add('err'):el.classList.remove('err');}};
+  const name=document.getElementById('f-name').value.trim();
+  flag('f-name',!name);show('e-name',!name);if(!name)ok=false;
+  const email=document.getElementById('f-email').value.trim();
+  const eOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  flag('f-email',!eOk);show('e-email',!eOk);if(!eOk)ok=false;
+  const mob=document.getElementById('f-mobile').value.trim();
+  const mOk=/^\d{10}$/.test(mob);
+  flag('f-mobile',!mOk);show('e-mobile',!mOk);if(!mOk)ok=false;
+  const col=document.getElementById('f-college').value;
+  flag('f-college',!col);show('e-college',!col);if(!col)ok=false;
+  const lap=document.querySelector('input[name="laptop"]:checked');
+  show('e-laptop',!lap);if(!lap)ok=false;
+  const fb=document.getElementById('f-feedback').value.trim();
+  flag('f-feedback',!fb);show('e-feedback',!fb);if(!fb)ok=false;
   return ok;
 }
 
-// ── SUBMIT ───────────────────────────────────────────
-let myRefCode = '';
+// ── SUBMIT with DUPLICATE CHECK ──────────────────────
+let myRefCode='';
 
 async function submitForm(){
-  if(!validate()){
-    document.querySelector('.err')?.scrollIntoView({behavior:'smooth',block:'center'});
-    return;
-  }
+  document.getElementById('dupAlert').style.display='none';
+  if(!validate()){ document.querySelector('.err')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
 
-  const btn  = document.getElementById('subBtn');
-  const sp   = document.getElementById('spin');
-  const btxt = document.getElementById('btxt');
-  btn.disabled = true; sp.style.display = 'block'; btxt.style.display = 'none';
+  const btn=document.getElementById('subBtn');
+  const sp=document.getElementById('spin');
+  const btxt=document.getElementById('btxt');
+  btn.disabled=true; sp.style.display='block'; btxt.style.display='none';
 
   const name   = document.getElementById('f-name').value.trim();
   const mobile = document.getElementById('f-mobile').value.trim();
-  const referredBy = decodeURIComponent(new URLSearchParams(window.location.search).get('ref') || '');
-
+  const email  = document.getElementById('f-email').value.trim();
+  const referredBy = decodeURIComponent(new URLSearchParams(window.location.search).get('ref')||'');
   myRefCode = generateRefCode(name, mobile);
 
-  const payload = {
-    timestamp:  new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'}),
-    name,
-    email:      document.getElementById('f-email').value.trim(),
-    mobile,
-    college:    document.getElementById('f-college').value,
-    laptop:     document.querySelector('input[name="laptop"]:checked')?.value || '',
+  // ── Step 1: Duplicate check via GET ──────────────
+  try {
+    const chkUrl = SHEET_URL + '?action=checkDuplicate&mobile=' + encodeURIComponent(mobile) + '&email=' + encodeURIComponent(email);
+    const chkRes = await fetch(chkUrl);
+    const chkData = await chkRes.json();
+    if(chkData.isDuplicate){
+      btn.disabled=false; sp.style.display='none'; btxt.style.display='inline';
+      const alert=document.getElementById('dupAlert');
+      alert.style.display='flex';
+      alert.scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+  } catch(_){ /* network issue – proceed, server will catch */ }
+
+  // ── Step 2: Submit ───────────────────────────────
+  const payload={
+    timestamp: new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}),
+    name, email, mobile,
+    college:  document.getElementById('f-college').value,
+    laptop:   document.querySelector('input[name="laptop"]:checked')?.value||'',
     referredBy,
-    refCode:    myRefCode,
-    feedback:   document.getElementById('f-feedback').value.trim()
+    refCode:  myRefCode,
+    feedback: document.getElementById('f-feedback').value.trim()
   };
 
   try {
-    await fetch(SHEET_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
+    await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
   } catch(_){}
 
-  btn.disabled = false; sp.style.display = 'none'; btxt.style.display = 'inline';
+  btn.disabled=false; sp.style.display='none'; btxt.style.display='inline';
   showSuccess();
 }
 
 // ── SHOW SUCCESS ─────────────────────────────────────
 function showSuccess(){
-  document.getElementById('formSection').style.display = 'none';
-  const ss = document.getElementById('successSection');
-  ss.style.display = 'block';
-  ss.scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('formSection').style.display='none';
+  const ss=document.getElementById('successSection');
+  ss.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 
-  // Ref code
-  document.getElementById('myRefCode').textContent = myRefCode;
+  document.getElementById('myRefCode').textContent=myRefCode;
+  const now=new Date();
+  document.getElementById('msgTime').textContent=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
 
-  // Set time in bubble
-  const now = new Date();
-  document.getElementById('msgTime').textContent =
-    now.getHours().toString().padStart(2,'0') + ':' +
-    now.getMinutes().toString().padStart(2,'0');
+  const refLink=PAGE_URL+'?ref='+encodeURIComponent(myRefCode);
+  window._waMsg=`Hi Buddy 👋\n\nMaine Array Class ke liye register kar liya hai, tum bhi kar lo 📚\nDhyan rakhna, Aaj Sham 7 Baje se 🕖\n\nRegistration Link: ${refLink}\n\nAbhi register kar lo !! 🚀`;
+  document.getElementById('waMessageBubble').textContent=window._waMsg;
 
-  // Build the exact message
-  const refLink = PAGE_URL + '?ref=' + encodeURIComponent(myRefCode);
-  const waMsg =
-`Hi Buddy 👋
-
-Maine Array Class ke liye register kar liya hai, tum bhi kar lo 📚
-Dhyan rakhna, Aaj Sham 7 Baje se 🕖
-
-Registration Link: ${refLink}
-
-Abhi register kar lo !! 🚀`;
-
-  // Store globally for share + copy
-  window._waMsg = waMsg;
-
-  // Render in WhatsApp bubble
-  document.getElementById('waMessageBubble').textContent = waMsg;
+  // Show sticky floating bar
+  document.getElementById('floatingWaBar').style.display='block';
 }
 
-// ── WHATSAPP SHARE (single button) ───────────────────
+// ── WHATSAPP SHARE ───────────────────────────────────
 function shareOnWhatsApp(){
-  const url = 'https://wa.me/?text=' + encodeURIComponent(window._waMsg);
-  window.open(url, '_blank');
-
-  // Reveal Join Group after click
-  setTimeout(() => {
-    const joinSec = document.getElementById('joinGroupSection');
-    joinSec.style.display = 'block';
-    joinSec.scrollIntoView({behavior:'smooth', block:'center'});
-
-    // Change share button to "Shared ✓"
-    const btn = document.getElementById('mainShareBtn');
-    btn.style.background = '#94a3b8';
-    btn.innerHTML = '✓ Shared! Ab Group Join Karo 👆';
-    btn.style.boxShadow = 'none';
-  }, 800);
+  window.open('https://wa.me/?text='+encodeURIComponent(window._waMsg),'_blank');
+  setTimeout(()=>{
+    document.getElementById('joinGroupSection').style.display='block';
+    // Update both buttons
+    const inlineBtn=document.getElementById('floatingShareBtn');
+    inlineBtn.classList.add('done');
+    inlineBtn.innerHTML='✓ Shared! Ab Group Join Karo 👆';
+  },800);
 }
 
-// ── COPY MESSAGE ─────────────────────────────────────
+// ── COPY (bubble area) ────────────────────────────────
 function copyMessage(){
-  navigator.clipboard.writeText(window._waMsg || '').then(() => {
-    const btn = document.getElementById('copyMsgBtn');
-    btn.textContent = '✓ Copied!';
-    btn.style.background = 'rgba(82,168,35,.2)';
-    btn.style.color = '#3d8019';
-    setTimeout(() => {
-      btn.textContent = '📋 Copy Message';
-      btn.style.background = 'rgba(0,0,0,.08)';
-      btn.style.color = '#374151';
-    }, 2200);
+  navigator.clipboard.writeText(window._waMsg||'').then(()=>{
+    const btn=document.getElementById('copyMsgBtn');
+    btn.textContent='✓ Copied!'; btn.style.color='#3d8019';
+    setTimeout(()=>{ btn.textContent='📋 Copy'; btn.style.color=''; },2000);
+  });
+}
+
+// ── COPY (floating bar) ───────────────────────────────
+function copyMessageFloat(){
+  navigator.clipboard.writeText(window._waMsg||'').then(()=>{
+    const btn=document.getElementById('floatingCopyBtn');
+    btn.textContent='✓ Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='📋 Copy'; btn.classList.remove('copied'); },2000);
   });
 }
 </script>
