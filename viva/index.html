@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Get the Viva Notes – College Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#1b3a5c;
+  --green:#52a823;
+  --green2:#3d8019;
+  --gold:#f5a623;
+  --bg:#f0f4f8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Poppins',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:3rem;}
+
+/* ── NAV ── */
+nav{background:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(27,58,92,.1);border-bottom:1.5px solid #e8edf3;}
+.nav-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:.7rem;padding:.45rem 1rem;}
+.nav-logo{height:40px;object-fit:contain;flex-shrink:0;padding:2px;}
+.nav-title{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.95rem;flex:1;}
+.nav-badge{background:var(--gold);color:var(--navy);font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;padding:.22rem .65rem;border-radius:99px;white-space:nowrap;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#1b3a5c 0%,#1e4d7a 50%,#1a5e38 100%);padding:1.75rem 1rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.hero::after{content:'📄';position:absolute;font-size:9rem;right:-1rem;bottom:-1.5rem;opacity:.05;pointer-events:none;line-height:1;}
+.chip{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:99px;padding:.24rem .8rem;color:#a8e063;font-size:.72rem;font-weight:600;margin-bottom:.6rem;}
+.hero h1{font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:clamp(1.5rem,5.5vw,2.1rem);line-height:1.2;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero-sub{color:rgba(255,255,255,.72);font-size:.82rem;margin-top:.35rem;line-height:1.55;}
+
+/* ── PDF PREVIEW CARD ── */
+.preview-wrap{max-width:600px;margin:0 auto;padding:0 1rem;margin-top:-1.2rem;}
+.pdf-card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(27,58,92,.13);overflow:hidden;animation:up .45s ease both;}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* Fake WhatsApp chat bubble area */
+.wa-preview{background:#0b141a;padding:1rem 1.1rem;}
+.wa-header{display:flex;align-items:center;gap:.6rem;padding-bottom:.75rem;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:.85rem;}
+.wa-avatar{width:36px;height:36px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.wa-name{font-family:'Nunito',sans-serif;font-weight:800;color:#e9edef;font-size:.85rem;}
+.wa-status{font-size:.66rem;color:#8696a0;}
+
+/* PDF attachment bubble */
+.pdf-bubble{background:#202c33;border-radius:10px;padding:.65rem .75rem;display:flex;align-items:center;gap:.75rem;margin-bottom:.4rem;}
+.pdf-icon{width:40px;height:40px;background:#ef4444;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pdf-icon svg{width:20px;height:20px;}
+.pdf-info{}
+.pdf-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;color:#e9edef;}
+.pdf-meta{font-size:.67rem;color:#8696a0;margin-top:.1rem;}
+.pdf-dl{width:32px;height:32px;background:rgba(255,255,255,.07);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.wa-time{text-align:right;font-size:.65rem;color:#8696a0;margin-top:.2rem;}
+
+/* ── MAIN CARD ── */
+.main-card{padding:1.25rem 1.1rem 1.5rem;}
+
+.section-label{font-family:'Nunito',sans-serif;font-weight:900;color:var(--navy);font-size:.95rem;margin-bottom:.65rem;}
+
+/* COLLEGE SELECT */
+.select-wrap{position:relative;margin-bottom:1rem;}
+.college-select{
+  width:100%;
+  border:2.5px solid #e2e8f0;
+  border-radius:12px;
+  padding:.72rem 2.4rem .72rem .9rem;
+  font-family:'Poppins',sans-serif;
+  font-size:.87rem;
+  color:#1e293b;
+  background:#f8fafc;
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+  cursor:pointer;
+}
+.college-select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(82,168,35,.13);background:#fff;}
+.college-select.err{border-color:#ef4444;}
+.select-arrow{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);pointer-events:none;}
+
+/* ERROR */
+.err-msg{font-size:.72rem;color:#ef4444;margin-top:.2rem;display:none;}
+
+/* GROUP PREVIEW (shown after selection) */
+.group-preview{
+  display:none;
+  background:linear-gradient(90deg,#f0fae8,#e8f4ff);
+  border:1.5px solid #b6dfa0;
+  border-radius:12px;
+  padding:.65rem .9rem;
+  margin-bottom:1rem;
+  font-size:.82rem;
+  color:var(--navy);
+  animation:up .3s ease;
+}
+.group-preview strong{color:var(--green2);}
+.group-preview .gp-label{font-size:.68rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.15rem;}
+
+/* CTA BUTTON */
+.cta-btn{
+  width:100%;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#fff;
+  border:none;
+  border-radius:13px;
+  padding:1rem;
+  font-family:'Nunito',sans-serif;
+  font-weight:900;
+  font-size:1.08rem;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.55rem;
+  box-shadow:0 4px 18px rgba(37,211,102,.4);
+  transition:transform .15s,box-shadow .15s;
+}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(37,211,102,.5);}
+.cta-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.cta-btn .cta-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;}
+.cta-btn .cta-main{font-size:1rem;}
+.cta-btn .cta-sub{font-size:.68rem;font-weight:600;opacity:.85;}
+
+/* NOTE */
+.note{background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:.6rem .85rem;font-size:.75rem;color:#78350f;line-height:1.6;margin-top:.85rem;display:flex;gap:.45rem;align-items:flex-start;}
+.note-icon{flex-shrink:0;margin-top:.05rem;}
+
+/* FOOTER */
+.footer{text-align:center;font-size:.67rem;color:#94a3b8;margin-top:1.25rem;}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <img src="cbdlogo.png" alt="College Buddy" class="nav-logo"
+         onerror="this.outerHTML='<span style=\'font-family:Nunito,sans-serif;font-weight:900;font-size:1rem;color:#1b3a5c\'>College<span style=\'color:#52a823\'>Buddy</span></span>'"/>
+    <div class="nav-title">College Buddy</div>
+    <div class="nav-badge">📄 Free Notes</div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="chip">📚 BCA · Practical Exam</div>
+  <h1>Get the <em>Viva Notes</em></h1>
+  <p class="hero-sub">Apna college select karo aur apne group ka PDF pao<br>— bilkul free! 🎁</p>
+</div>
+
+<!-- ── CONTENT ── -->
+<div class="preview-wrap">
+  <div class="pdf-card">
+
+    <!-- WhatsApp-style PDF preview -->
+    <div class="wa-preview">
+      <div class="wa-header">
+        <div class="wa-avatar">📚</div>
+        <div>
+          <div class="wa-name">College Buddy – Notes Bot</div>
+          <div class="wa-status">online</div>
+        </div>
+      </div>
+
+      <div class="pdf-bubble">
+        <div class="pdf-icon">
+          <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+            <path d="M14 2v6h6" fill="none" stroke="white" stroke-width="1.5"/>
+            <text x="6" y="19" font-size="5" font-family="Arial" font-weight="bold" fill="white">PDF</text>
+          </svg>
+        </div>
+        <div class="pdf-info">
+          <div class="pdf-name">LAB Programs – Harshit.pdf</div>
+          <div class="pdf-meta">51 pages · PDF · 2 MB</div>
+        </div>
+        <div class="pdf-dl">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8696a0" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+      </div>
+      <div class="wa-time">3:02 pm ✓</div>
+    </div>
+
+    <!-- Main form -->
+    <div class="main-card">
+
+      <div class="section-label">📍 Apna College Select Karo</div>
+
+      <div class="select-wrap">
+        <select class="college-select" id="collegeSelect" onchange="onCollegeChange()">
+          <option value="">-- Apna College Chunein --</option>
+          <!-- Options injected by JS -->
+        </select>
+        <span class="select-arrow">
+          <svg width="11" height="7" viewBox="0 0 11 7"><path d="M1 1l4.5 4.5L10 1" stroke="#1b3a5c" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+        </span>
+      </div>
+      <p class="err-msg" id="errMsg">⚠️ Pehle apna college select karein.</p>
+
+      <!-- Group preview -->
+      <div class="group-preview" id="groupPreview">
+        <div class="gp-label">Aapka Group</div>
+        <strong id="groupName">—</strong>
+      </div>
+
+      <!-- CTA -->
+      <button class="cta-btn" id="ctaBtn" onclick="joinGroup()" disabled>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.121 1.522 5.857L.058 23.5l5.818-1.525A11.939 11.939 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.804 9.804 0 0 1-5.012-1.369l-.358-.213-3.724.976.994-3.63-.234-.373A9.79 9.79 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182c5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/>
+        </svg>
+        <div class="cta-text">
+          <span class="cta-main" id="ctaMain">WhatsApp Group Join Karo</span>
+          <span class="cta-sub" id="ctaSub">Pehle college select karein</span>
+        </div>
+      </button>
+
+      <div class="note">
+        <span class="note-icon">💡</span>
+        <span>Group join karne ke baad PDF file <strong>pinned message</strong> mein milegi. Group mein aane ke baad scroll up karein!</span>
+      </div>
+
+    </div>
+  </div>
+  <p class="footer">© 2025 College Buddy · Sabke liye free</p>
+</div>
+
+<script>
+// ── COLLEGE → GROUP MAPPING ──────────────────────────
+const GROUP_MAP = [
+  {
+    name:     'SITAMARHI — Ayush',
+    colleges: [
+      'S.R.K.G. College, Sitamarhi',
+      'S.L.K. College, Sitamarhi',
+      'R.S.S. Sc. College, Sitamarhi',
+      'R.S.S.M. College, Sitamarhi',
+    ],
+    link: 'https://chat.whatsapp.com/EthDuTrL0fZ3t5M1fE5D0r?mode=gi_t'
+  },
+  {
+    name:     'MOTIHARI + BETTIAH — Ankita',
+    colleges: [
+      'L.N.D. College, Motihari',
+      'S.N.S. College, Motihari',
+      'M.S. College, Motihari',
+      'M.J.K. College, Bettiah',
+      'R.L.S.Y. College, Bettiah',
+      'S.R.A.P. College, Barachakia',
+      'T. P. Verma College, Narkatiyaganj',
+      'J.L.N.M. College, Ghorasahan',
+    ],
+    link: 'https://chat.whatsapp.com/EthDuTrL0fZ3t5M1fE5D0r?mode=gi_t'
+  },
+  {
+    name:     'VAISHALI / HAJIPUR — Coding with Suhani',
+    colleges: [
+      'R.N. College, Hajipur',
+      'L.N. College, Bhagwanpur',
+      'B.M.D. College, Dayalpur',
+      'J.L. College, Hajipur',
+      'M.S.M. Samata College, Jandah',
+    ],
+    link: 'https://chat.whatsapp.com/K0ZdjyuryP8FNNOLlI3y3E?mode=gi_t'
+  },
+  {
+    name:     'MZP BUDDY',
+    colleges: [
+      'L.S. College, Muzaffarpur',
+      'R.D.S. College, Muzaffarpur',
+      'L.N.T. College, Muzaffarpur',
+      'Nitishwar College, Muzaffarpur',
+    ],
+    link: 'https://chat.whatsapp.com/Fri2Yk8296N0y5bCdgo9Xk?mode=gi_t'
+  },
+  {
+    name:     'Abhi Learning',
+    colleges: [
+      'CN College, Sahebganj',
+      'Rameshwar Mahavidyalaya, Muzaffarpur',
+      'M.P.S. Sc. College, Muzaffarpur',
+      'Dr. R.M.L.S. College, Muzaffarpur',
+      'Vaishali Institute of Business and Rural Management, Muzaffarpur',
+    ],
+    link: 'https://chat.whatsapp.com/LRq6anz9Dj4LlZBn1MlrOD?mode=gi_t'
+  },
+  {
+    name:     'BCA Buddies',
+    colleges: [
+      'Indu Devi Ranjeet Kumar Prakash',
+      'Ranjeet Kumar Prakash',
+      'Umesh Kumar Ranjeet Vidayalya',
+      'M.S.S.G. College, Areraj',
+    ],
+    link: 'https://chat.whatsapp.com/GJt5haSCCd3AotFDtBBZIy?mode=gi_t'
+  },
+  {
+    name:     'Neha — MDDM',
+    colleges: [
+      'M.D.D.M. College, Muzaffarpur',
+    ],
+    link: 'https://chat.whatsapp.com/JgylkXYvkImBzHXReS5OhG'
+  },
+];
+
+// Flat sorted list for dropdown (alphabetical, Other last)
+const ALL_COLLEGES = GROUP_MAP.flatMap(g => g.colleges).sort((a,b)=>a.localeCompare(b));
+ALL_COLLEGES.push('Other');
+
+// Build dropdown
+const sel = document.getElementById('collegeSelect');
+ALL_COLLEGES.forEach(c => {
+  const o = document.createElement('option');
+  o.value = c;
+  o.textContent = c;
+  sel.appendChild(o);
+});
+
+// Lookup helper
+function getGroup(college){
+  if(!college || college === 'Other') return GROUP_MAP[3]; // fallback → MZP BUDDY
+  return GROUP_MAP.find(g => g.colleges.includes(college)) || GROUP_MAP[3];
+}
+
+let currentLink = null;
+
+function onCollegeChange(){
+  const val = sel.value;
+  const errEl  = document.getElementById('errMsg');
+  const preview = document.getElementById('groupPreview');
+  const btn     = document.getElementById('ctaBtn');
+  const ctaMain = document.getElementById('ctaMain');
+  const ctaSub  = document.getElementById('ctaSub');
+
+  if(!val){
+    errEl.style.display = 'none';
+    preview.style.display = 'none';
+    btn.disabled = true;
+    ctaSub.textContent = 'Pehle college select karein';
+    currentLink = null;
+    return;
+  }
+
+  sel.classList.remove('err');
+  errEl.style.display = 'none';
+
+  const group = getGroup(val);
+  currentLink = group.link;
+
+  document.getElementById('groupName').textContent = group.name;
+  preview.style.display = 'block';
+
+  ctaMain.textContent = group.name + ' — Join Now';
+  ctaSub.textContent  = 'WhatsApp group mein milega PDF 📄';
+  btn.disabled = false;
+}
+
+function joinGroup(){
+  if(!sel.value){
+    sel.classList.add('err');
+    document.getElementById('errMsg').style.display = 'block';
+    sel.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  if(currentLink) window.open(currentLink, '_blank');
+}
+</script>
+</body>
+</html>
